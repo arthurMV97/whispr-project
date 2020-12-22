@@ -64,7 +64,8 @@ app.post("/sign-in", (req, res) => {
 
 //------ ROUTES USER -------
 
-app.put('/user', (req, res) => {
+app.put('/user/:id', (req, res) => {
+    const id = req.params.id
     const newData = {
         prenom: req.body.prenom,
         nom: req.body.nom,
@@ -73,7 +74,7 @@ app.put('/user', (req, res) => {
         description: req.body.description,
         lieu: req.body.lieu
     }
-    connection.query("UPDATE user SET ?", newData, (err, result) => {
+    connection.query(`UPDATE user SET ? WHERE id = ${id}`, newData, (err, result) => {
         if (result) {
             res.status(200).send(`Les informations de ${newData.prenom} ont été mises à jour.`)
 
@@ -83,6 +84,7 @@ app.put('/user', (req, res) => {
     })
 })
 
+app.delete("user/:id")
 app.listen(port, () => {
     console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)
 })

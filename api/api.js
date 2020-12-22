@@ -87,13 +87,46 @@ app.put('/user/:id', (req, res) => {
 app.delete("/user/:id", (req, res) => {
 
     const id = req.params.id;
-    console.log(id)
     connection.query(`DELETE FROM user WHERE id = ${id}`, (err, result) => {
         if (err) throw err 
         res.status(200).send(`L'utilisateur numéro ${id} a bien été supprimé`)
     })
 })
 
+app.get("/user/:id", (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNEMENTS, SES ABONNES
+
+})
+
+
+//------ ROUTES PUBLICATIONS -------
+
+app.post("/post", (req, res) => {
+    const postInfo = {
+        user_id: req.body.user_id,
+        reponse_id: req.body.reponse_id,
+        date: new Date(),
+        content: req.body.content
+    }
+
+    connection.query("INSERT INTO post SET ?", postInfo, (err, result) => {
+        if (err) throw err
+        if(result.length < 1) {
+        res.status(400).send('Les données insérées ne sont pas prises en charge')
+        }
+        else {
+            res.status(200).send('Le post a bien été publié')
+        }
+    })
+})
+
+app.delete("/post/:id", (req, res) => {
+    const id = req.params.id
+
+    connection.query(`DELETE FROM post WHERE id = ${id}`, (err, result) => {
+        if (err) throw err 
+        res.status(200).send(`Le post numéro ${id} a bien été supprimé`)
+    })
+})
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)

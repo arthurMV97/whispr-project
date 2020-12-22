@@ -84,7 +84,17 @@ app.put('/user/:id', (req, res) => {
     })
 })
 
-app.delete("user/:id")
+app.delete("/user/:id", (req, res) => {
+
+    const id = req.params.id;
+    console.log(id)
+    connection.query(`DELETE FROM user WHERE id = ${id}`, (err, result) => {
+        if (err) throw err 
+        res.status(200).send(`L'utilisateur numéro ${id} a bien été supprimé`)
+    })
+})
+
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)
 })

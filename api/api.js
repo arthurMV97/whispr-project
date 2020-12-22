@@ -134,10 +134,9 @@ app.delete("/post/:id", (req, res) => {
 //------ ROUTES ABONNEMENTS -------
 
 app.post("/suivre/:id", (req, res) => {
-    const idUserToFollow = req.params.id;
     const followingData = {
         user_id: req.body.user_id, //Plus tard dans token
-        compte_abonnement_id: idUserToFollow,
+        compte_abonnement_id: req.params.id,
         date: new Date()
     }
 
@@ -154,7 +153,7 @@ app.post("/suivre/:id", (req, res) => {
 
 app.delete("/suivre/:id", (req, res) => {
     const idUserToUnfollow = req.params.id
-    const user_id = req.body.user_id
+    const user_id = req.body.user_id //Plus tard dans token
     
 
     connection.query(`DELETE FROM abonnement WHERE compte_abonnement_id = ${idUserToUnfollow} AND user_id = ${user_id}` , (err, result) => {
@@ -164,6 +163,47 @@ app.delete("/suivre/:id", (req, res) => {
 })
 
 
+//------ ROUTES FAVORIS -------
+
+app.post("/favoris/:id", (req, res) => {
+    const favorisData = {
+        user_id: req.body.user_id, //Plus tard dans token
+        post_id: req.params.id,
+        date: new Date()
+    }
+
+    connection.query("INSERT INTO favoris SET ?", favorisData, (err, result) => {
+        if (err) throw err
+        if(result.length < 1) {
+        res.status(400).send("Le post n'existe pas ou plus")
+        }
+        else {
+            res.status(200).send("Le post a bien été ajouté à vos favoris")
+        }
+    })
+
+})
+
+app.delete("/favoris/:id", (req, res) => {
+    const idPostToUnlike = req.params.id
+    const user_id = req.body.user_id //Plus tard dans token
+
+    connection.query(`DELETE FROM favoris WHERE post_id = ${idPostToUnlike} AND user_id = ${user_id}` , (err, result) => {
+        if (err) throw err 
+        res.status(200).send(`Le post numéro ${idPostToUnlike} a bien été supprimé des favoris`)
+    })
+})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)
 })
+
+//------ ROUTES GENERALES -------
+
+app.get("/users", (req, res) => {
+    connection.query("SELECT id, prenom, nom, email FROM user", (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+

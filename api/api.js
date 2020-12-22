@@ -104,7 +104,7 @@ app.get("/user/:id", (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNE
 app.get("/post", (req, res) => {
     const user_id = req.body.user_id //Plus tard dans token
 
-    connection.query(`SELECT * FROM post INNER JOIN abonnement ON post.user_id = abonnement.compte_abonnement_id WHERE abonnement.user_id = ${user_id}`, (req, res) => {
+    connection.query(`SELECT * FROM post INNER JOIN abonnement ON post.user_id = abonnement.compte_abonnement_id WHERE abonnement.user_id = ${user_id} AND post.reponse_id IS NULL`, (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })

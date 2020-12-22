@@ -11,6 +11,9 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
 
+
+//------ ROUTES CONNEXION -------
+
 app.post("/sign-up", (req, res) => {
     const user = {
         prenom: req.body.prenom,
@@ -41,16 +44,17 @@ app.post("/sign-in", (req, res) => {
         console.log(result)
         
         if(result.length < 1) {
-            res.status(401).send('Email invalide')
+            res.status(400).send('Email invalide')
         }
         else {
             let token = jwt.sign({email: result[0].email, id: result[0].id}, config.secret)
             let hashed = result[0].password
             bcrypt.compare(userConnect.password, hashed, (err, result) => {
                 if (result) {
+                    console.log(result)
                     res.status(200).send({token})
                 } else {
-                    res.status(403).send('Mot de passe ou email invalide')
+                    res.status(400).send('Mot de passe ou email invalide')
                 }
             })
         }
@@ -58,8 +62,26 @@ app.post("/sign-in", (req, res) => {
     })
 })
 
+//------ ROUTES USER -------
 
+app.put('/user', (req, res) => {
+    const newData = {
+        prenom: req.body.prenom,
+        nom: req.body.nom,
+        date: req.body.date,
+        image: req.body.image,
+        description: req.body.description,
+        lieu: req.body.lieu
+    }
+    connection.query("UPDATE user SET ?", newData, (err, result) => {
+        if (result) {
+            res.status(200).send(`Les informations de ${newData.prenom} ont été mises à jour.`)
 
+        } else {
+            res.status(400).send('Les données insérées ne sont pas prises en compte')
+        }
+    })
+})
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)

@@ -93,6 +93,7 @@ app.delete("/user/:id", (req, res) => {
     })
 })
 
+
 app.get("/user/:id", (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNEMENTS, SES ABONNES
 
 })
@@ -100,13 +101,14 @@ app.get("/user/:id", (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNE
 
 //------ ROUTES PUBLICATIONS -------
 
-app.post("/post", (req, res) => {
+app.post("/post", (req, res) => { //Manque prise en compte des images
     const postInfo = {
-        user_id: req.body.user_id,
+        user_id: req.body.user_id, //Plus tard dans token
         reponse_id: req.body.reponse_id,
         date: new Date(),
-        content: req.body.content
+        content: req.body.content,
     }
+    
 
     connection.query("INSERT INTO post SET ?", postInfo, (err, result) => {
         if (err) throw err
@@ -127,6 +129,40 @@ app.delete("/post/:id", (req, res) => {
         res.status(200).send(`Le post numéro ${id} a bien été supprimé`)
     })
 })
+
+
+//------ ROUTES ABONNEMENTS -------
+
+app.post("/suivre/:id", (req, res) => {
+    const idUserToFollow = req.params.id;
+    const followingData = {
+        user_id: req.body.user_id, //Plus tard dans token
+        compte_abonnement_id: idUserToFollow,
+        date: new Date()
+    }
+
+    connection.query("INSERT INTO abonnement SET ?", followingData, (err, result) => {
+        if (err) throw err
+        if(result.length < 1) {
+        res.status(400).send("L'utiisateur n'existe pas ou plus")
+        }
+        else {
+            res.status(200).send("L'utilisateur a bien été ajouté à vos abonnements")
+        }
+    })
+})
+
+app.delete("/suivre/:id", (req, res) => {
+    const idUserToUnfollow = req.params.id
+    const user_id = req.body.user_id
+    
+
+    connection.query(`DELETE FROM abonnement WHERE compte_abonnement_id = ${idUserToUnfollow} AND user_id = ${user_id}` , (err, result) => {
+        if (err) throw err 
+        res.status(200).send(`L'abonnement numéro ${idUserToUnfollow} a bien été supprimé`)
+    })
+})
+
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)

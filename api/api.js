@@ -101,6 +101,15 @@ app.get("/user/:id", (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNE
 
 //------ ROUTES PUBLICATIONS -------
 
+app.get("/post", (req, res) => {
+    const user_id = req.body.user_id //Plus tard dans token
+
+    connection.query(`SELECT * FROM post INNER JOIN abonnement ON post.user_id = abonnement.compte_abonnement_id WHERE abonnement.user_id = ${user_id}`, (req, res) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+
 app.post("/post", (req, res) => { //Manque prise en compte des images
     const postInfo = {
         user_id: req.body.user_id, //Plus tard dans token
@@ -200,8 +209,15 @@ app.listen(port, () => {
 
 //------ ROUTES GENERALES -------
 
-app.get("/users", (req, res) => {
+app.get("/user", (req, res) => {
     connection.query("SELECT id, prenom, nom, email FROM user", (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+
+app.get("/post", (req, res) => {
+    connection.query("SELECT * FROM post", (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })

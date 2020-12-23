@@ -157,19 +157,19 @@ app.delete("/post/:id", (req, res) => {
 
 //------ ROUTES ABONNEMENTS -------
 
-app.get("abonnements/:id", (req, res) => {
+app.get("/abonnements/:id", (req, res) => {
     const userId = req.params.id
 
-    connection.query(`SELECT nom, prenom, image FROM user INNER JOIN abonnement ON user.id = abonnement.compte_abonnement_id WHERE abonnement.user_id = ${userId}`, (err, result) => {
+    connection.query(`SELECT user.id, nom, prenom, image FROM user INNER JOIN abonnement ON user.id = abonnement.compte_abonnement_id WHERE abonnement.user_id = ${userId}`, (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })
 })
 
-app.get("abonnes/:id", (req, res) => {
+app.get("/abonnes/:id", (req, res) => {
     const userId = req.params.id
 
-    connection.query(`SELECT nom, prenom, image FROM user INNER JOIN abonnement ON user.id = abonnement.user_id WHERE abonnement.compte_abonnement_id = ${userId}`, (err, result) => {
+    connection.query(`SELECT user.id, nom, prenom, image FROM user INNER JOIN abonnement ON user.id = abonnement.user_id WHERE abonnement.compte_abonnement_id = ${userId}`, (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })

@@ -94,7 +94,22 @@ app.delete("/user/:id", (req, res) => {
 })
 
 
-app.get("/user/:id", (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNEMENTS, SES ABONNES
+app.get("/profile/:id", async (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNEMENTS, SES ABONNES
+    const userId = req.params.id
+    let profileData
+
+     connection.query(`SELECT nom, prenom, date, image, description, lieu FROM user WHERE id = ${userId}`, (err, result) => {
+        if (err) throw err
+        profileData = result[0]
+
+        connection.query(`SELECT * FROM post WHERE user_id = ${userId} AND reponse_id IS NULL`, (err, result) => {
+            if (err) throw err 
+            profileData.post = result
+            
+          console.log(profileData)
+        })
+        
+    })
 
 })
 
@@ -142,6 +157,24 @@ app.delete("/post/:id", (req, res) => {
 
 //------ ROUTES ABONNEMENTS -------
 
+app.get("abonnements/:id", (req, res) => {
+    const userId = req.params.id
+
+    connection.query(`SELECT nom, prenom, image FROM user INNER JOIN abonnement ON user.id = abonnement.compte_abonnement_id WHERE abonnement.user_id = ${userId}`, (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+
+app.get("abonnes/:id", (req, res) => {
+    const userId = req.params.id
+
+    connection.query(`SELECT nom, prenom, image FROM user INNER JOIN abonnement ON user.id = abonnement.user_id WHERE abonnement.compte_abonnement_id = ${userId}`, (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+
 app.post("/suivre/:id", (req, res) => {
     const followingData = {
         user_id: req.body.user_id, //Plus tard dans token
@@ -173,6 +206,15 @@ app.delete("/suivre/:id", (req, res) => {
 
 
 //------ ROUTES FAVORIS -------
+
+app.get("favoris/:id", (req, res) => { //GET les posts mis en favoris
+    const userId = req.params.id
+
+    connection.query(`SELECT * FROM post INNER JOIN favoris ON post.id = favoris.post_id WHERE favoris.user_id = ${userId}`, (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+}) 
 
 app.post("/favoris/:id", (req, res) => {
     const favorisData = {

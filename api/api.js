@@ -94,7 +94,7 @@ app.delete("/user/:id", (req, res) => {
 })
 
 
-app.get("/profile/:id", async (req, res) => { // Comprend SES POST, SES LIKES, SES ABONNEMENTS, SES ABONNES
+app.get("/profile/:id", async (req, res) => { // Comprend SES POST et SES INFOS
     const userId = req.params.id
     let profileData
 
@@ -105,8 +105,7 @@ app.get("/profile/:id", async (req, res) => { // Comprend SES POST, SES LIKES, S
         connection.query(`SELECT * FROM post WHERE user_id = ${userId} AND reponse_id IS NULL`, (err, result) => {
             if (err) throw err 
             profileData.post = result
-            
-          console.log(profileData)
+            res.status(200).send(profileData)
         })
         
     })
@@ -207,7 +206,7 @@ app.delete("/suivre/:id", (req, res) => {
 
 //------ ROUTES FAVORIS -------
 
-app.get("favoris/:id", (req, res) => { //GET les posts mis en favoris
+app.get("/favoris/:id", (req, res) => { //GET les posts mis en favoris
     const userId = req.params.id
 
     connection.query(`SELECT * FROM post INNER JOIN favoris ON post.id = favoris.post_id WHERE favoris.user_id = ${userId}`, (err, result) => {

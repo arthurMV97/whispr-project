@@ -244,9 +244,6 @@ app.delete("/favoris/:id", (req, res) => {
     })
 })
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)
-})
 
 //------ ROUTES GENERALES -------
 
@@ -262,5 +259,10 @@ app.get("/post", (req, res) => {
         if (err) throw err
         res.status(200).send(result)
     })
+})
+
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)
 })
 

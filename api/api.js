@@ -15,6 +15,7 @@ app.use(express.json())
 //------ ROUTES CONNEXION -------
 
 app.post("/sign-up", (req, res) => {
+    console.log(typeof req.body.date, req.body.date)
     const user = {
         prenom: req.body.prenom,
         nom: req.body.nom,

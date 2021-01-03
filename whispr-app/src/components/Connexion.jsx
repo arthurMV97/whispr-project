@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
+const jwt = require('jsonwebtoken')
+
+
 
 
 
@@ -24,7 +27,15 @@ class Connexion extends Component {
         axios.post('http://localhost:8080/sign-in', userData)
             .then(res => {
                 const token = res.data.token
-                console.log(token)
+                
+                try {
+                    const decoded = jwt.decode(token)
+                    decoded.token = token
+                    console.log(decoded)
+                }
+                catch (err){
+                    console.log(err)
+                }
             })
     }
 

@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import {Link} from 'react-router-dom'
+
+
 
 class Inscription extends Component {
     constructor() {
@@ -23,7 +27,11 @@ class Inscription extends Component {
         if (this.state.confirm === this.state.password) {
             const user = this.state
             delete user.confirm
-            console.log(user)
+
+            axios.post('http://localhost:8080/sign-up', user)
+                .then(res => {
+                    console.log(res.data)
+                })
         } else {
             console.log("Mot de passe incorrect")
         }
@@ -59,6 +67,9 @@ class Inscription extends Component {
                 </div>
                 <button type="submit">Connexion</button>
             </form>
+            <div>
+                <p>Vous êtes déjà inscris ? <Link  to="/connexion">Connectez-vous ici.</Link></p>
+            </div>
             </div>
         );
     }

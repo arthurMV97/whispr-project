@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const port = 8080;
 const domain = 'localhost';
 const connection = require("./db")
@@ -7,8 +8,16 @@ const config = require("./config")
 const bcrypt = require('bcrypt')
 const saltRound = 10
 const jwt = require('jsonwebtoken')
+
+
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+app.use(cors());
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next(); 
+})
 
 
 
@@ -45,7 +54,7 @@ app.post("/sign-in", (req, res) => {
         console.log(result)
         
         if(result.length < 1) {
-            res.status(400).send('Email invalide')
+            res.status(401).send('Email invalide')
         }
         else {
             let token = jwt.sign({email: result[0].email, id: result[0].id}, config.secret)
@@ -55,7 +64,8 @@ app.post("/sign-in", (req, res) => {
                     console.log(result)
                     res.status(200).send({token})
                 } else {
-                    res.status(400).send('Mot de passe ou email invalide')
+                    console.log('Mot de passe invalide')
+                    res.status(401).send('Mot de passe ou email invalide')
                 }
             })
         }
@@ -264,6 +274,6 @@ app.get("/post", (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}, go to : http://${domain}/${port}/`)
+    console.log(`Listening on port ${port}, go to : http://${domain}:${port}/`)
 })
 

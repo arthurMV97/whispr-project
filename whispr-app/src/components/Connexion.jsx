@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom'
+import axios from 'axios';
+
+
 
 class Connexion extends Component {
     constructor() {
@@ -8,17 +12,40 @@ class Connexion extends Component {
             password: ''
         }
     }
+    handleChange = event => {
+        const targetName = event.target.name
+    this.setState({[targetName]: event.target.value})
+    }
+    handleSubmit = event => {
+        event.preventDefault();
+        const userData = this.state
+        console.log(userData)
+
+        axios.post('http://localhost:8080/sign-in', userData)
+            .then(res => {
+                const token = res.data.token
+                console.log(token)
+            })
+    }
+
     render() {
         return (
             <div>
                 <h1>Se connecter</h1>
-            <form action="">
-                <label for="email">Entrez votre email: </label>
-                <input type="email" name="email" id="email" required />
-                <label for="password">Entrez votre mot de passe: </label>
-                <input type="password" name="password" id="password" required />
+            <form onSubmit={this.handleSubmit}>
+                <div>
+                <label >Email: </label>
+                <input type="email" name="email" id="email" onChange={this.handleChange} required />
+                </div>
+                <div>
+                <label >Mot de passe: </label>
+                <input type="password" name="password" id="password" onChange={this.handleChange} required />
+                </div>
                 <button type="submit">Connexion</button>
             </form>
+            <div>
+                <p>Vous n'avez pas de compte ? <Link  to="/inscription">Inscrivez-vous ici.</Link></p>
+            </div>
             </div>
         );
     }

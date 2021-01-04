@@ -65,7 +65,7 @@ class Connexion extends Component {
 
 function mapStateToProps(state) { //Accéder aux données de notre store dans les props
     return {
-      isLogged: state.isLogged
+      isLogged: state.userStore.isLogged
       // products: state.products.products
     };
   }

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { userData } from '../store/actions/user'
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 const jwt = require('jsonwebtoken')
-
-
 
 
 
@@ -32,6 +32,7 @@ class Connexion extends Component {
                     const decoded = jwt.decode(token)
                     decoded.token = token
                     console.log(decoded)
+                    this.props.userData(decoded)
                 }
                 catch (err){
                     console.log(err)
@@ -62,4 +63,18 @@ class Connexion extends Component {
     }
 }
 
-export default Connexion;
+function mapStateToProps(state) { //Accéder aux données de notre store dans les props
+    return {
+      isLogged: state.isLogged
+      // products: state.products.products
+    };
+  }
+
+const mapDispatchToProps = { 
+  userData                
+}
+
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+  )(Connexion);

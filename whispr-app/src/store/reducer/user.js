@@ -1,4 +1,5 @@
 const initialState = {
+    isLogged: false,
     email: '',
     id: null,
     image: '',
@@ -9,6 +10,7 @@ const userStore = (state = initialState, action) => {
     switch(action.type) {
         case 'USER_LOGIN':
             return {
+                isLogged: true,
                 email: action.email,
                 id: action.id,
                 image: action.image,
@@ -16,5 +18,10 @@ const userStore = (state = initialState, action) => {
             }
         case 'USER_SIGNOUT': 
             return initialState;
+
+        default:
+            return state
     }
 }
+
+export default userStore

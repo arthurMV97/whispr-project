@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { userData } from '../store/actions/user'
 import {Link} from 'react-router-dom'
 import axios from 'axios';
-const jwt = require('jsonwebtoken')
+import { withRouter} from 'react-router-dom';
 
+
+const jwt = require('jsonwebtoken')
 
 
 class Connexion extends Component {
@@ -33,6 +35,7 @@ class Connexion extends Component {
                     decoded.token = token
                     console.log(decoded)
                     this.props.userData(decoded)
+                    this.props.history.push('/')
                 }
                 catch (err){
                     console.log(err)
@@ -77,4 +80,4 @@ const mapDispatchToProps = {
 
 export default connect(
     mapStateToProps, mapDispatchToProps
-  )(Connexion);
+  )(withRouter(Connexion));

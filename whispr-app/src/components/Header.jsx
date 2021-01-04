@@ -1,9 +1,22 @@
 import React from 'react';
 import logo from '../files/WHISPR.png'
-// import Home from "./Home.jsx"
 import {Link} from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
+
+
 
 const Header = () => {
+    const dispatch = useDispatch()
+    const history = useHistory()
+
+    const signOutFct = () => {
+    console.log('déconnexion')
+    dispatch({ type: 'USER_SIGNOUT' })
+    history.push('/')
+}
+
+
     return (
         <div>
             <header>
@@ -17,9 +30,9 @@ const Header = () => {
 		                <li><Link to="/profil">Profil</Link></li>
                     </ul>
                 </nav>
-                <button>Déconnexion</button>
+                <button type="button" onClick={()=> signOutFct()}>Déconnexion</button>
             </header>
-            {/* <Home /> */}
+           
         </div>
     );
 };

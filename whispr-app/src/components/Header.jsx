@@ -1,13 +1,14 @@
 import React from 'react';
 import logo from '../files/WHISPR.png'
 import {Link} from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
 
 
 const Header = () => {
     const dispatch = useDispatch()
+    const isLogged = useSelector(state => state.userStore.isLogged)
     const history = useHistory()
 
     const signOutFct = () => {
@@ -23,7 +24,8 @@ const Header = () => {
                 <div id="logo">
 	                <img alt="logo" src={logo}/>
 	            </div>
-                <nav>
+                {isLogged && <div>
+                    <nav>
                     <ul>
 		                <li><Link to="/">Accueil</Link></li>
 		                <li><Link to="/decouvrir">Découvrir</Link></li>
@@ -31,6 +33,8 @@ const Header = () => {
                     </ul>
                 </nav>
                 <button type="button" onClick={()=> signOutFct()}>Déconnexion</button>
+                    </div>}
+                
             </header>
            
         </div>

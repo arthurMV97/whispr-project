@@ -30,7 +30,8 @@ app.post("/sign-up", (req, res) => {
         nom: req.body.nom,
         email: req.body.email,
         password: req.body.password,
-        date: new Date(req.body.date)
+        date: new Date(req.body.date),
+        admin: false
     }
 
     let hash = bcrypt.hashSync(user.password, saltRound)
@@ -57,7 +58,7 @@ app.post("/sign-in", (req, res) => {
             res.status(401).send('Email invalide')
         }
         else {
-            let token = jwt.sign({email: result[0].email, id: result[0].id}, config.secret)
+            let token = jwt.sign({email: result[0].email, id: result[0].id, image: result[0].image, isAdmin: Boolean(result[0].admin)}, config.secret)
             let hashed = result[0].password
             bcrypt.compare(userConnect.password, hashed, (err, result) => {
                 if (result) {

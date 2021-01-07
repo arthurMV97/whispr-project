@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import { adminData } from '../store/actions/admin'
+import { withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const jwt = require('jsonwebtoken')
 
@@ -29,8 +31,8 @@ class Admin extends Component {
                     const decoded = jwt.decode(token)
                     decoded.token = token
                     console.log(decoded)
-                    // this.props.userData(decoded)
-                    // this.props.history.push('/admin-dashboard')
+                    this.props.adminData(decoded)
+                    this.props.history.push('/admin-dashboard')
                 }
                 catch (err){
                     console.log(err)
@@ -59,4 +61,18 @@ class Admin extends Component {
     }
 }
 
-export default Admin;
+function mapStateToProps(state) { //Accéder aux données de notre store dans les props
+    return {
+      isLogged: state.adminStore.isLogged
+      // products: state.products.products
+    };
+  }
+
+const mapDispatchToProps = { 
+  adminData                
+}
+
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+  )(withRouter(Admin));

@@ -79,19 +79,19 @@ app.post('/admin-sign-in', (req, res) => {
         password: req.body.password
     }
 
-    connection.query("SELECT * FROM admin WHERE identifiant = ?", adminConnect.identifiant, (err, result) => {
+    connection.query(`SELECT * FROM admin WHERE identifiant = '${adminConnect.identifiant}'`,  (err, result) => {
         if (err) throw err;
-        console.log(result)
+        console.log('result1>>>',result)
         
         if(result.length < 1) {
             res.status(401).send('Identifiant invalide')
         }
         else {
-            let token = jwt.sign({identifiant: result[0].identifiant, id: result[0].id, statut: result[0].statut, }, config.secret)
+            let token = jwt.sign({identifiant: result[0].identifiant, id: result[0].id, statut: result[0].statut, nom: result[0].nom, prenom: result[0].prenom }, config.secret)
             let hashed = result[0].password
-            bcrypt.compare(userConnect.password, hashed, (err, result) => {
+            bcrypt.compare(adminConnect.password, hashed, (err, result) => {
                 if (result) {
-                    console.log(result)
+                    console.log('result 2 >>', result)
                     res.status(200).send({token})
                 } else {
                     console.log('Mot de passe invalide')

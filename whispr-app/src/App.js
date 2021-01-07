@@ -4,6 +4,8 @@ import Home from "./components/Home"
 import Connexion from "./components/Connexion";
 import Inscription from "./components/Inscription";
 import Profil from "./components/Profil";
+import HomeAdmin from "./components/HomeAdmin";
+import AdminDashboard from "./components/AdminDashboard";
 
 import {
   BrowserRouter as Router,
@@ -32,6 +34,12 @@ function App() {
           </Route>
           <Route path="/inscription">
             <Inscription />
+          </Route>
+          <Route path="/mysecureadmin">
+            <HomeAdmin />
+          </Route>
+          <Route path="/admin-dashboard">
+            <AdminDashboard />
           </Route>
         </Switch>
     </Router>

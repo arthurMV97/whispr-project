@@ -3,8 +3,9 @@ export const userData = (data) => {
         type: 'USER_LOGIN',
         email: data.email,
         id: data.id,
-        isAdmin: data.isAdmin,
         image: data.image,
+        nom: data.nom,
+        prenom: data.prenom,
         token: data.token,
     }
 }

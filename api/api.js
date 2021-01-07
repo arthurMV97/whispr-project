@@ -31,7 +31,6 @@ app.post("/sign-up", (req, res) => {
         email: req.body.email,
         password: req.body.password,
         date: new Date(req.body.date),
-        admin: false
     }
 
     let hash = bcrypt.hashSync(user.password, saltRound)
@@ -58,7 +57,7 @@ app.post("/sign-in", (req, res) => {
             res.status(401).send('Email invalide')
         }
         else {
-            let token = jwt.sign({email: result[0].email, id: result[0].id, image: result[0].image, isAdmin: Boolean(result[0].admin)}, config.secret)
+            let token = jwt.sign({email: result[0].email, id: result[0].id, image: result[0].image, nom: result[0].nom, prenom: result[0].prenom},  config.secret)
             let hashed = result[0].password
             bcrypt.compare(userConnect.password, hashed, (err, result) => {
                 if (result) {
@@ -72,6 +71,37 @@ app.post("/sign-in", (req, res) => {
         }
         
     })
+})
+
+app.post('/admin-sign-in', (req, res) => {
+    const adminConnect = {
+        identifiant: req.body.identifiant,
+        password: req.body.password
+    }
+
+    connection.query("SELECT * FROM admin WHERE identifiant = ?", adminConnect.identifiant, (err, result) => {
+        if (err) throw err;
+        console.log(result)
+        
+        if(result.length < 1) {
+            res.status(401).send('Identifiant invalide')
+        }
+        else {
+            let token = jwt.sign({identifiant: result[0].identifiant, id: result[0].id, statut: result[0].statut, }, config.secret)
+            let hashed = result[0].password
+            bcrypt.compare(userConnect.password, hashed, (err, result) => {
+                if (result) {
+                    console.log(result)
+                    res.status(200).send({token})
+                } else {
+                    console.log('Mot de passe invalide')
+                    res.status(401).send('Mot de passe ou email invalide')
+                }
+            })
+        }
+
+    })
+
 })
 
 //------ ROUTES USER -------

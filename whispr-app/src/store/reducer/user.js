@@ -1,9 +1,10 @@
 const initialState = {
     isLogged: false,
-    isAdmin: false,
     email: '',
     id: null,
     image: '',
+    nom: '',
+    prenom: '',
     token: ''
 }
 
@@ -12,7 +13,6 @@ const userStore = (state = initialState, action) => {
         case 'USER_LOGIN':
             return {
                 isLogged: true,
-                isAdmin: action.isAdmin,
                 email: action.email,
                 id: action.id,
                 image: action.image,

@@ -24,16 +24,16 @@ const Header = () => {
                 <div id="logo">
 	                <img alt="logo" src={logo}/>
 	            </div>
-                {isLogged && <div>
-                    <nav>
+                {isLogged && <nav>
+                    
                     <ul>
 		                <li><Link to="/">Accueil</Link></li>
 		                <li><Link to="/decouvrir">Découvrir</Link></li>
 		                <li><Link to="/profil">Profil</Link></li>
                     </ul>
-                </nav>
-                <button type="button" onClick={()=> signOutFct()}>Déconnexion</button>
-                    </div>}
+                
+                <button className="empty-btn" type="button" onClick={()=> signOutFct()}>Déconnexion</button>
+                </nav>}
                 
             </header>
            

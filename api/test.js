@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const saltRound = 10
-const mdp = "luckyluckleboss" 
+const mdp = "arthurleboss" 
 let hash = bcrypt.hashSync(mdp, saltRound)
 
 console.log(hash)

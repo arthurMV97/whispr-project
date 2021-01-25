@@ -8,11 +8,23 @@ const config = require("./config")
 const bcrypt = require('bcrypt')
 const saltRound = 10
 const jwt = require('jsonwebtoken')
+const server = require('http').createServer(app)
+
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*'
+    }
+})
+
+
+
 
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 app.use(cors());
+
+
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -43,6 +55,28 @@ app.post("/sign-up", (req, res) => {
 
 })
 
+//--------MIDDLEWARE SIGN-IN 
+
+app.use('/sign-in', (req, res, next) => {
+    connection.query("SELECT email FROM user WHERE email = ?", req.body.email, (err, result) => {
+
+        console.log('middleware')
+        console.log(req.body.email);
+        console.log(result[0])
+        if (result[0] === undefined) {
+            res.status(400).send('Cet email n\'existe pas')
+            
+        }
+        else if (result[0]) {
+            next()
+        }
+    })
+    
+})
+
+
+//---ROUTE SIGN-IN
+
 app.post("/sign-in", (req, res) => {
     const userConnect = {
         email: req.body.email,
@@ -51,9 +85,8 @@ app.post("/sign-in", (req, res) => {
 
     connection.query("SELECT * FROM user WHERE email = ?", userConnect.email, (err, result) => {
         if (err) throw err;
-        console.log(result)
-        
-        if(result.length < 1) {
+    
+        if (result.length < 1) {
             res.status(401).send('Email invalide')
         }
         else {
@@ -65,7 +98,7 @@ app.post("/sign-in", (req, res) => {
                     res.status(200).send({token})
                 } else {
                     console.log('Mot de passe invalide')
-                    res.status(401).send('Mot de passe ou email invalide')
+                    res.status(401).send('Mot de passe invalide')
                 }
             })
         }
@@ -303,8 +336,17 @@ app.get("/post", (req, res) => {
     })
 })
 
+//----------- SOCKETS  ----------
+io.on('connection', socket => {
+    console.log('New Websocket Connection');
+    socket.emit('message', 'Welcome')
+})
 
-app.listen(port, () => {
+//---------------------------------
+
+
+
+server.listen(port, () => {
     console.log(`Listening on port ${port}, go to : http://${domain}:${port}/`)
 })
 

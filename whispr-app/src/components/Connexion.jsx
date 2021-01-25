@@ -24,12 +24,12 @@ class Connexion extends Component {
     handleSubmit = event => {
         event.preventDefault();
         const userData = this.state
-        console.log(userData)
+        
 
         axios.post('http://localhost:8080/sign-in', userData)
             .then(res => {
                 const token = res.data.token
-                
+                console.log(res.data);
                 try {
                     const decoded = jwt.decode(token)
                     decoded.token = token
@@ -40,6 +40,9 @@ class Connexion extends Component {
                 catch (err){
                     console.log(err)
                 }
+            }).catch(err => {
+                console.log(err.response.data);
+                
             })
     }
 

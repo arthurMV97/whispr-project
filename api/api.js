@@ -120,6 +120,11 @@ app.delete("/favoris/:id", (req, res) => {
 io.on('connection', socket => {
     console.log('New Websocket Connection');
     socket.emit('message', 'Welcome')
+
+    socket.on('posteData', (data) => {
+        console.log(data)
+        // connection.query()
+    })
 })
 
 //---------------------------------

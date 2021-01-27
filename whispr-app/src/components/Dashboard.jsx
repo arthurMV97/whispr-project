@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import SinglePost from './SinglePoste'
 let socket
 
 
@@ -20,14 +21,19 @@ class Dashboard extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        const dataToEmit = this.state.posteToSend
+        const dataToEmit = {
+            content: this.state.posteToSend,
+            user_id: this.props.userId,
+            date: new Date(),
+        }
+        console.log(dataToEmit)
         socket.emit('posteData', dataToEmit)
     }
 
     componentDidMount() {
         axios.get(`http://localhost:8080/post/${this.props.userId}`, )
         .then(res => {
-            this.setState({postes: res.data})
+            this.setState({postes: res.data.reverse()})
             console.log(this.state.postes)
         })
         socket = io('localhost:8080')
@@ -38,16 +44,15 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                         <textarea placeholder="Racontez-nous quelque chose..." name="posteToSend" onChange={this.handleChange}></textarea>
                         <button className="full-btn">Publier</button>
                     </form>
                 <div className="feed">
                     {
                         this.state.postes.map((element, index) => {
-                           return (
-                           <div className="poste" key={index}>Element numéro {index}</div>
-                           )
+                           return <SinglePost dataFromParent = {element} key={index}/>
+                           
                         })
                     }
                     
@@ -59,8 +64,9 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) { 
     return {
-      userId: state.userStore.id
+      userId: state.userStore.id,
     };
   }
+
 
 export default connect(mapStateToProps)(Dashboard);

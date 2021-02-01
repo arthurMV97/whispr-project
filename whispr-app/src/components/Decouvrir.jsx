@@ -1,9 +1,10 @@
 import React from 'react';
+import ProfileResume from './ProfileResume';
 
-const Decouvrir = () => {
+const Decouvrir = (props) => {
     return (
         <div>
-            <h1>Découvrir</h1>
+            <ProfileResume displayUserData = {props.displayUserData}/>
         </div>
     );
 };

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import SinglePost from './SinglePoste'
+import ProfileResume from './ProfileResume'
 let socket
 
 
@@ -40,7 +41,6 @@ class Dashboard extends Component {
                 return b.id - a.id
             })
             this.setState({postes: postes})
-            console.log(this.state.postes)
         })
         socket = io('localhost:8080')
         
@@ -63,12 +63,18 @@ class Dashboard extends Component {
                 this.setState({postes: newState})
                 console.log(this.state.postes)
           })
-
+          
       
     }
+
+    
     render() {
         return (
             <div>
+                <div className="Profile_-infos">
+                    <ProfileResume displayUserData = {this.props.displayUserData} />
+                </div>
+                <div className="feed">
                 <form onSubmit={this.handleSubmit}>
                         <textarea placeholder="Racontez-nous quelque chose..." name="posteToSend" onChange={this.handleChange}></textarea>
                         <button className="full-btn">Publier</button>
@@ -81,6 +87,7 @@ class Dashboard extends Component {
                         })
                     }
                     
+                </div>
                 </div>
             </div>
         );

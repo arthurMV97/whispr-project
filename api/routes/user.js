@@ -44,15 +44,11 @@ router.get("/profile/:id", async (req, res) => { // Comprend SES POST et SES INF
     const userId = req.params.id
     let profileData
 
-     connection.query(`SELECT nom, prenom, date, image, description, lieu FROM user WHERE id = ${userId}`, (err, result) => {
+     connection.query(`SELECT id, nom, prenom, image, description, lieu, (SELECT COUNT(*) FROM abonnement WHERE user_id = ${userId}) AS abonnements, (SELECT COUNT(*) FROM abonnement WHERE compte_abonnement_id = ${userId}) AS abonnes FROM user WHERE id = ${userId}`, (err, result) => {
         if (err) throw err
         profileData = result[0]
 
-        connection.query(`SELECT * FROM post WHERE user_id = ${userId} AND reponse_id IS NULL`, (err, result) => {
-            if (err) throw err 
-            profileData.post = result
-            res.status(200).send(profileData)
-        })
+        res.status(200).send(profileData)
         
     })
 

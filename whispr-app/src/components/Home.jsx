@@ -7,12 +7,11 @@ import { useSelector } from 'react-redux';
 const Home = (props) => {
     const isLogged = useSelector(state => state.userStore.isLogged )
     useEffect(() => {
-        console.log('home', props.displayUserData)
 
     }, [])
     return (
         <div>
-            {isLogged ? <Dashboard />:
+            {isLogged ? <Dashboard displayUserData = {props.displayUserData} />:
             <div>
             <Link to="/inscription"><button className="full-btn">Inscription</button></Link>
                 <Link to="/connexion"><button className="empty-btn">Connexion</button></Link>

@@ -12,6 +12,7 @@ const adminStore = (state = initialState, action) => {
     switch(action.type) {
         case 'ADMIN_LOGIN':
             return {
+                ...state,
                 isLogged: true,
                 identifiant: action.identifiant,
                 id: action.id,

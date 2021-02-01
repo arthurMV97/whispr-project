@@ -55,15 +55,7 @@ app.post("/post", (req, res) => { //Manque prise en compte des images
         content: req.body.content,
     }
 
-    connection.query("INSERT INTO post SET ?", postInfo, (err, result) => {
-        if (err) throw err
-        if(result.length < 1) {
-        res.status(400).send('Les données insérées ne sont pas prises en charge')
-        }
-        else {
-            res.status(200).send('Le post a bien été publié')
-        }
-    })
+    
 })
 
 app.delete("/post/:id", (req, res) => {
@@ -117,13 +109,68 @@ app.delete("/favoris/:id", (req, res) => {
 
 
 //----------- SOCKETS  ----------
+let connectedUsers = []
 io.on('connection', socket => {
+
+    
+
     console.log('New Websocket Connection');
-    socket.emit('message', 'Welcome')
+    socket.emit('message-console', 'Welcome')
+
+    socket.on('socket-id', (data) => {
+
+        if (data.socket) { //Lorsqu'un utilisateur se connecte les autres user send leurs id mais pas leurs socket id
+            if (connectedUsers.find(e => e.user === data.user)) {
+                const index = connectedUsers.findIndex(e => e.user === data.user)
+                connectedUsers.splice(index, 1, data)
+            }
+            else {
+                connectedUsers.push(data)
+    
+            }
+        }
+        console.log('User Connected');
+        console.log(connectedUsers)
+    })
 
     socket.on('posteData', (data) => {
-        console.log(data)
-        // connection.query()
+        const posteToDB = {
+            user_id: data.user_id, 
+            reponse_id: data.reponse_id,
+            date: new Date(),
+            content: data.content,
+        }
+
+        const sendToFront = {
+            user_id: data.user_id,
+            image: data.image,
+            prenom: data.prenom,
+            nom: data.nom,
+            content: data.content,
+            TotalFavoris: 0,
+            TotalComment: 0,
+        }
+        console.log(sendToFront)
+        connection.query("INSERT INTO post SET ?", posteToDB, (err, res) => {
+            if (err) throw err
+            if(res.length < 1) {
+                socket.emit('message-console', 'Les données insérées ne sont pas prises en charge')
+            }
+            else {
+                connection.query(`SELECT abonnement.user_id FROM abonnement WHERE abonnement.compte_abonnement_id = ${data.user_id}`, (err, result) => {
+                    if (err) throw err
+                    console.log(result)
+                    connectedUsers.forEach(e => {
+                        if (result.find(elem => e.user === elem.user_id)) { //SI l'id de la db est egal a un des id du tableau connected user
+                            console.log(e.user, e.socket)
+                            io.to(e.socket).emit('new-post',sendToFront)
+                        }
+                    
+
+                    })
+                })
+            }
+        })
     })
 })
 

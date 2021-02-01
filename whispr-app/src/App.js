@@ -6,7 +6,9 @@ import Inscription from "./components/Inscription";
 import Profil from "./components/Profil";
 import HomeAdmin from "./components/HomeAdmin";
 import AdminDashboard from "./components/AdminDashboard";
-
+import axios from 'axios';
+import React, {useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,19 +17,35 @@ import {
 } from "react-router-dom";
 
 function App() {
+  const userId = useSelector(state => state.userStore.id)
+  const isUserLogged = useSelector(state => state.userStore.isLogged)
+  const [userData, setUserData] = useState({})
+  
+  useEffect(() => {
+    if (isUserLogged) {
+      axios.get(`http://localhost:8080/profile/${userId}`)
+      .then(res => {
+        console.log("user data", res.data)
+        setUserData(res.data)
+      })
+    }
+   
+}, [])
+
+  
   return (
     <Router>
           <Header />
 
           <Switch>
           <Route exact path="/">
-            <Home />
+            <Home displayUserData = {userData} />
           </Route>
           <Route path="/decouvrir">
-            <Decouvrir />
+            <Decouvrir displayUserData = {userData} />
           </Route>
           <Route path="/profil">
-            <Profil />
+            <Profil displayUserData = {userData} />
           </Route>
           <Route path="/connexion">
             <Connexion />

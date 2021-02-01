@@ -23,23 +23,48 @@ class Dashboard extends Component {
         event.preventDefault();
         const dataToEmit = {
             content: this.state.posteToSend,
-            user_id: this.props.userId,
-            date: new Date(),
+            user_id: this.props.userData.id,
+            nom: this.props.userData.nom,
+            prenom: this.props.userData.prenom,
+            image: this.props.userData.image
         }
         console.log(dataToEmit)
         socket.emit('posteData', dataToEmit)
+        
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8080/post/${this.props.userId}`, )
+        axios.get(`http://localhost:8080/post/${this.props.userData.id}` )
         .then(res => {
-            this.setState({postes: res.data.reverse()})
+            let postes = res.data.sort((a, b) => { //trier par id et donc creation
+                return b.id - a.id
+            })
+            this.setState({postes: postes})
             console.log(this.state.postes)
         })
         socket = io('localhost:8080')
-        socket.on('message', (data) => {
-            console.log(data)
-        })
+        
+        socket.on("connect", () => {
+
+            socket.on('message-console', (data) => {
+                console.log(data)
+            })
+            console.log(socket.id);
+            
+            const idUser = {  
+                socket: socket.id,
+                user: this.props.userData.id
+            }
+            socket.emit('socket-id', idUser ) //Envoyer l'id user et l'id socket correspondant
+          });
+
+          socket.on('new-post', (data) => {
+              let newState = [data].concat(this.state.postes)
+                this.setState({postes: newState})
+                console.log(this.state.postes)
+          })
+
+      
     }
     render() {
         return (
@@ -64,7 +89,7 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) { 
     return {
-      userId: state.userStore.id,
+      userData: state.userStore
     };
   }
 

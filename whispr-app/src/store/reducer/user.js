@@ -12,11 +12,14 @@ const userStore = (state = initialState, action) => {
     switch(action.type) {
         case 'USER_LOGIN':
             return {
+                ...state,
                 isLogged: true,
                 email: action.email,
                 id: action.id,
                 image: action.image,
-                token: action.token
+                token: action.token,
+                nom: action.nom,
+                prenom: action.prenom
             }
         case 'USER_SIGNOUT': 
             return initialState;

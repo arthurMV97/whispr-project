@@ -30,7 +30,7 @@ function App() {
       })
     }
    
-}, [])
+}, [isUserLogged, userId])
 
   
   return (
@@ -59,6 +59,7 @@ function App() {
           <Route path="/admin-dashboard">
             <AdminDashboard />
           </Route>
+
         </Switch>
     </Router>
   )

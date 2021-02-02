@@ -35,7 +35,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:8080/post/${this.props.userData.id}` )
+        axios.get(`http://localhost:8080/feed/${this.props.userData.id}` )
         .then(res => {
             let postes = res.data.sort((a, b) => { //trier par id et donc creation
                 return b.id - a.id

@@ -1,9 +1,13 @@
 import React from 'react';
+import SinglePost from './SinglePoste'
 
-const MesPostes = () => {
+const MesPostes = (props) => {
+
     return (
         <div>
-            Mes Postes
+            {props.postes.map((element, index) => {
+                return <SinglePost dataFromParent = {element} key={index}/>
+                                })}
         </div>
     );
 };

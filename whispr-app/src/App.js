@@ -19,6 +19,7 @@ import {
 function App() {
   const userId = useSelector(state => state.userStore.id)
   const isUserLogged = useSelector(state => state.userStore.isLogged)
+
   const [userData, setUserData] = useState({})
   
   useEffect(() => {
@@ -44,8 +45,8 @@ function App() {
           <Route path="/decouvrir">
             <Decouvrir displayUserData = {userData} />
           </Route>
-          <Route path="/profil">
-            <Profil displayUserData = {userData} />
+          <Route path="/profil/:id">
+            <Profil />
           </Route>
           <Route path="/connexion">
             <Connexion />

@@ -265,6 +265,7 @@ h1 {
                 width: 8vw;
                 height: 6vh;
                 margin: 1em 0 2em 9em;
+                
             }
         }
     }
@@ -283,6 +284,7 @@ h1 {
             border: solid 1px $border-color;
             color : white;
             font-size: 1.2em;
+            cursor: pointer;
             &:focus { 
                 outline: 0;
             }

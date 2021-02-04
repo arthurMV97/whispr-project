@@ -26,23 +26,30 @@ const Profil = (props) => {
 
     function changeComponent(bool) {
         setBool(bool)
+        
     }
     return (
-        <div>
-            <div className="profile">
-            <img src={props.displayUserData.image} alt={"profile-user" + props.displayUserData.id}/>
-            <p>{props.displayUserData.prenom + ' ' + props.displayUserData.nom}</p>
-            <button className="full-btn">Modifier</button>
+        <div className="profil-page">
+            <div className="profil">
+                <div className="user">
+                    <img src={props.displayUserData.image} alt={"profile-user" + props.displayUserData.id}/>
+                    <p>{props.displayUserData.prenom + ' ' + props.displayUserData.nom}</p>
+                    <button className="full-btn">Modifier</button>
+
+                </div>
+            
             <p>{props.displayUserData.description}</p>
             <p>Lieu: {props.displayUserData.lieu}</p>
+            <div className="abonnement-infos"></div>
             <p>Abonnements: {props.displayUserData.abonnements}</p>
             <p>Abonnés: {props.displayUserData.abonnes}</p>
             </div>
-            <div className="profile-feed">
-                <ul>
-                    <li><button onClick={() => changeComponent(true)}>Mes Postes</button></li>
-                    <li><button onClick={() => changeComponent(false)}>Mes Favoris</button></li>
+            <ul className="nav-list">
+                    <li><button onClick={() => changeComponent(true)} className={boolState ? "clicked" : null }>Mes Postes</button></li>
+                    <li><button onClick={() => changeComponent(false)} className={!boolState ? "clicked" : null }>Mes Favoris</button></li>
                 </ul>
+            <div className="profil-feed">
+                
                 {boolState ? <MesPostes postes = {postesState} /> : <MesFavoris favoris = {favorisState}/>}
             </div>
         </div>

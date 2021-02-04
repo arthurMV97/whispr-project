@@ -13,9 +13,13 @@ const Home = (props) => {
         <div>
             {isLogged ? <Dashboard displayUserData = {props.displayUserData} />:
             <div>
-            <Link to="/inscription"><button className="full-btn">Inscription</button></Link>
-                <Link to="/connexion"><button className="empty-btn">Connexion</button></Link>
+                <h1>Bienvenue sur Whispr !</h1>
+                <div className="connexions">
+                    <Link to="/inscription"><button className="full-btn">Inscription</button></Link>
+                    <Link to="/connexion"><button className="empty-btn">Connexion</button></Link>
+                </div>
             </div>
+            
             }
         </div>
     );

@@ -61,7 +61,7 @@ class Connexion extends Component {
                 <label >Mot de passe: </label>
                 <input type="password" name="password" id="password" onChange={this.handleChange} required />
                 </div>
-                <button type="submit">Connexion</button>
+                <button type="submit" className="full-btn">Connexion</button>
             </form>
             <div>
                 <p>Vous n'avez pas de compte ? <Link  to="/inscription">Inscrivez-vous ici.</Link></p>

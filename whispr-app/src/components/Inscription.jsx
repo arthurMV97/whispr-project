@@ -65,7 +65,7 @@ class Inscription extends Component {
                 <label >Confirmez votre mot de passe: </label>
                 <input type="password" name="confirm" id="confirm" onChange={this.handleChange} required />
                 </div>
-                <button type="submit">Inscription</button>
+                <button type="submit" className="full-btn">Inscription</button>
             </form>
             <div>
                 <p>Vous êtes déjà inscris ? <Link  to="/connexion">Connectez-vous ici.</Link></p>

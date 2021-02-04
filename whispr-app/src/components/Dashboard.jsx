@@ -70,16 +70,16 @@ class Dashboard extends Component {
     
     render() {
         return (
-            <div>
-                <div className="Profile_-infos">
+            <div className="accueil">
+                
                     <ProfileResume displayUserData = {this.props.displayUserData} />
-                </div>
+            
                 <div className="feed">
                 <form onSubmit={this.handleSubmit}>
                         <textarea placeholder="Racontez-nous quelque chose..." name="posteToSend" onChange={this.handleChange}></textarea>
                         <button className="full-btn">Publier</button>
                     </form>
-                <div className="feed">
+                
                     {
                         this.state.postes.map((element, index) => {
                            return <SinglePost dataFromParent = {element} key={index}/>
@@ -87,7 +87,7 @@ class Dashboard extends Component {
                         })
                     }
                     
-                </div>
+                
                 </div>
             </div>
         );

@@ -3,6 +3,8 @@
 $my-yellow : #E8CD5E;
 $border-color : #9694A1;
 $test : red solid 1px;
+$dark-background: #2A3138;
+
 
 body {
     background-color: #303841;
@@ -14,6 +16,8 @@ body {
 textarea {
     resize: none;
  }
+
+
 
 header {
     border-bottom: 1px solid $border-color;
@@ -66,11 +70,29 @@ header {
         }
 
         button {
-           margin: 0.6em;
-
+            margin: 0.6em;
 
         }
     }
+}
+
+h1 {
+    margin: 1em auto;
+    width: fit-content;
+    font-size: 4em;
+}
+
+.connexions {
+    margin: 8% auto;
+    width: min-content;
+    display: flex;
+
+    button {
+        margin: 2em;
+        width: 10vw;
+        height: 6vh;
+    }
+
 }
 
 .empty-btn {
@@ -102,14 +124,188 @@ header {
     }
 }
 
-.poste {
-    border: white 1px solid;
-    margin: 1em;
 
-    img {
-        width: 3em;
-        height: 3em;
-        border-radius: 50%;
+
+.accueil {
+    display: flex;
+
+    
+
+    .feed {
+        form {
+            display: flex;;
+            flex-direction: column;
+            margin: 1em 5em;
+            border: $border-color solid 1px;
+            border-radius: 1em;
+            padding: 1em;
+
+            textarea {
+                padding: 3em;
+                border: none;
+                border-radius: 1em;
+                width: 50vw;
+                height: 10vh;
+                margin: 0 auto;
+                background-color: $dark-background ;
+                padding: 1em;
+                color: white;
+                font-family: 'Roboto', sans-serif;
+                font-size: 1em ;
+
+                
+                &::placeholder {
+                    color: $border-color;
+                }
+            }
+
+            button {
+                width: 7vw;
+                height: 5vh;
+                margin: 2em auto 1em auto;
+            }
+        }
     }
+}
+
+.profil-infos {
+    border: $border-color solid 1px;
+    border-radius: 1em;
+    margin: 1em 0 0 2em;
+    padding: 0.6em;
+    width: 20vw;
+    height: 18vw;
+    color: white;
+
+    .user {
+        img {
+        margin: 0.3em 0.5em 0 0;
+        width: 4.5vw;
+        height: 9vh;
+        border-radius: 50%;
+        border: 2px solid $my-yellow;
+        }
+
+        p {
+            text-decoration: underline;
+            font-size: 1.2em;
+        }
+    }
+    .user-infos {
+        margin: 1em;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .abonnement-infos {
+        display: flex;
+        justify-content: left;
+        margin-left: 1em;
+
+        p {
+            margin: 0em 1em 0 0;
+        }
+    }
+}
+
+
+
+.poste {
+    background-color: $dark-background;
+    border-radius: 1em;
+    margin: 1em auto ;
+    padding: 1em;
+    width: 60vw;
+    .user {
+        img {
+            margin-top: 0.3em;
+            width: 3em;
+            height: 3em;
+            border-radius: 50vw;
+            border: 2px solid $my-yellow;
+        }
+
+        p {
+            color: $my-yellow;
+            font-size: 1.2em;
+            margin-left: 0.5em;
+            
+        }
+    }
+
+    
+}
+
+.profil-page {
+
+    .profil {
+        margin: 1em auto 0 auto;
+        border: $border-color solid 1px;;
+        border-radius: 1em;
+        width: 40vw;
+        padding: 1em;
+        
+        .user {
+            img {
+                margin: 0.3em 0.5em 0 0;
+                width: 8vw;
+                height: 16vh;
+                border-radius: 50%;
+                border: 2px solid $my-yellow;
+            }
+
+            p {
+                font-size: 2.3em;
+                margin-left: 0.4em;
+            }
+
+            button {
+                width: 8vw;
+                height: 6vh;
+                margin: 1em 0 2em 9em;
+            }
+        }
+    }
+
+    .nav-list {
+        list-style: none;
+        display: flex;
+        margin: 2em auto 0 auto;
+        width: 62vw;
+        padding: 0 ;
+        
+        button {
+            width: 31vw;
+            height: 7vh;
+            background-color: $dark-background;
+            border: solid 1px $border-color;
+            color : white;
+            font-size: 1.2em;
+            &:focus { 
+                outline: 0;
+            }
+
+        }
+    }
+
+    .profil-feed {
+        margin: 0 auto;
+        width: 70vw;
+        padding: 0 1em 1em 1em;
+
+        
+}
+}
+
+
+.user {
+    display: flex;
+    justify-content: left;
+}
+
+.clicked {
+    border-top: $my-yellow solid 3px !important;
 }
 

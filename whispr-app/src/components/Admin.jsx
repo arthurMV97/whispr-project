@@ -42,9 +42,11 @@ class Admin extends Component {
 
     render() {
         return (
-            <div>
+            <div >
                 <h1>Connexion Admin</h1>
-            <form onSubmit={this.handleSubmit}>
+                <div className="connexions">
+                <div className="connexion-forms">
+                <form onSubmit={this.handleSubmit}>
                 <div>
                 <label >identifiant Admin: </label>
                 <input type="text" name="identifiant" id="identifiant" onChange={this.handleChange} required />
@@ -53,8 +55,10 @@ class Admin extends Component {
                 <label >Mot de passe: </label>
                 <input type="password" name="password" id="password" onChange={this.handleChange} required />
                 </div>
-                <button type="submit">Connexion</button>
+                <button type="submit" className="full-btn">Connexion</button>
             </form>
+                </div>
+                </div>
             
             </div>
         );

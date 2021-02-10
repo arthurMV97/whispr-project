@@ -14,7 +14,9 @@ class Connexion extends Component {
         super();
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            msg: '',
+            valid: null
         }
     }
     handleChange = event => {
@@ -39,9 +41,13 @@ class Connexion extends Component {
                 }
                 catch (err){
                     console.log(err)
+
+
                 }
             }).catch(err => {
                 console.log(err.response.data);
+              if  (this.state.valid === null) { this.setState({msg: "L'email ou le mot de passe sont incorrect", valid: false})}
+
                 
             })
 
@@ -52,19 +58,18 @@ class Connexion extends Component {
         return (
             <div>
                 <h1>Se connecter</h1>
+                <div className="connexion-forms">
             <form onSubmit={this.handleSubmit}>
-                <div>
-                <label >Email: </label>
-                <input type="email" name="email" id="email" onChange={this.handleChange} required />
-                </div>
-                <div>
-                <label >Mot de passe: </label>
-                <input type="password" name="password" id="password" onChange={this.handleChange} required />
-                </div>
+                <input type="email" name="email" id="email" placeholder="Email"  onChange={this.handleChange} required />
+                <input type="password" name="password" id="password" placeholder="Mot de passe"  onChange={this.handleChange} required />
+                {this.state.valid ? null : <p className='not-valid-input'>{this.state.msg}</p>}
+
                 <button type="submit" className="full-btn">Connexion</button>
+
             </form>
             <div>
                 <p>Vous n'avez pas de compte ? <Link  to="/inscription">Inscrivez-vous ici.</Link></p>
+            </div>
             </div>
             </div>
         );

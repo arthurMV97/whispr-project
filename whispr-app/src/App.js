@@ -37,7 +37,7 @@ function App() {
   return (
     <Router>
           <Header />
-
+          
           <Switch>
           <Route exact path="/">
             <Home displayUserData = {userData} />
@@ -62,6 +62,7 @@ function App() {
           </Route>
 
         </Switch>
+       
     </Router>
   )
 }

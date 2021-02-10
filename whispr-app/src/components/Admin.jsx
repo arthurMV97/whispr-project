@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { adminData } from '../store/actions/admin'
-import { withRouter} from 'react-router-dom';
+import { Link, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const jwt = require('jsonwebtoken')
@@ -11,7 +11,9 @@ class Admin extends Component {
         super();
         this.state = {
             identifiant: '',
-            password: ''
+            password: '',
+            msg: '',
+            valid: null
         }
     }
     handleChange = event => {
@@ -37,30 +39,33 @@ class Admin extends Component {
                 catch (err){
                     console.log(err)
                 }
+            }).catch(err => {
+                console.log(err.response.data);
+                if  (this.state.valid === null) { this.setState({msg: "L'identifiant ou le mot de passe sont incorrect", valid: false})}
+
             })
     }
 
     render() {
         return (
-            <div >
+            <div>
+                
                 <h1>Connexion Admin</h1>
-                <div className="connexions">
+
                 <div className="connexion-forms">
                 <form onSubmit={this.handleSubmit}>
-                <div>
-                <label >identifiant Admin: </label>
-                <input type="text" name="identifiant" id="identifiant" onChange={this.handleChange} required />
-                </div>
-                <div>
-                <label >Mot de passe: </label>
-                <input type="password" name="password" id="password" onChange={this.handleChange} required />
-                </div>
+                <input type="text" name="identifiant" id="identifiant" placeholder="Identifiant Admin" onChange={this.handleChange} required />
+                <input type="password" name="password" id="password"  placeholder="Mot de passe" onChange={this.handleChange} required />
+                {this.state.valid ? null : <p className='not-valid-input'>{this.state.msg}</p>}
+
                 <button type="submit" className="full-btn">Connexion</button>
             </form>
-                </div>
-                </div>
-            
+            <div>
+            <p>Vous n'êtes pas un administrateur ? <Link  to="/connexion">Connectez vous ici.</Link></p>
+
             </div>
+            </div>
+                </div>
         );
     }
 }

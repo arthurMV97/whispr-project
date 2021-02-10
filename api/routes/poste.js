@@ -3,7 +3,7 @@ const router = express.Router()
 const connection = require("../db")
 
 router.get("/post", (req, res) => {
-    connection.query("SELECT * FROM post", (err, result) => {
+    connection.query("SELECT post.id, post.content, post.date, post.user_id, user.nom, user.prenom, user.image, (SELECT COUNT(*) FROM favoris WHERE favoris.post_id = post.id) AS TotalFavoris, (SELECT COUNT(*) FROM post WHERE post.reponse_id = post.id) AS TotalComment FROM post INNER JOIN user ON post.user_id = user.id ORDER BY `post`.`id` DESC", (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })

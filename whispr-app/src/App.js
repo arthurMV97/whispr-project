@@ -12,13 +12,16 @@ import { useSelector } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 
 } from "react-router-dom";
 
 function App() {
   const userId = useSelector(state => state.userStore.id)
   const isUserLogged = useSelector(state => state.userStore.isLogged)
+  const isAdmin = useSelector(state => state.adminStore.isLogged)
+
 
   const [userData, setUserData] = useState({})
   
@@ -42,23 +45,22 @@ function App() {
           <Route exact path="/">
             <Home displayUserData = {userData} />
           </Route>
-          <Route path="/decouvrir">
-            <Decouvrir displayUserData = {userData} />
-          </Route>
-          <Route path="/profil/:id">
-            <Profil />
-          </Route>
+
+           <Route path="/decouvrir"> {isUserLogged ? <Decouvrir displayUserData = {userData} /> : <Redirect to="/"/>} </Route>
+         <Route path="/profil/:id">  {isUserLogged ? <Profil />  : <Redirect to="/"/> }</Route>
+          
           <Route path="/connexion">
-            <Connexion />
+            {!isUserLogged ? <Connexion /> : <Redirect to="/"/>}
           </Route>
           <Route path="/inscription">
-            <Inscription />
+          {!isUserLogged ? <Inscription /> : <Redirect to="/"/>}
           </Route>
+
           <Route path="/mysecureadmin">
-            <HomeAdmin />
+            {!isAdmin && !isUserLogged ? <HomeAdmin /> : <Redirect to="admin-dashboard"/>}
           </Route>
           <Route path="/admin-dashboard">
-            <AdminDashboard />
+            {isAdmin ? <AdminDashboard /> : <Redirect to="/"/>}
           </Route>
 
         </Switch>

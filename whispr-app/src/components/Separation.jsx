@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Separation = ({color}) => {
+const Separation = () => {
     return (
         <hr
         style={{

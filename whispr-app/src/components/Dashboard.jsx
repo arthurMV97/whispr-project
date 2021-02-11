@@ -8,13 +8,18 @@ let socket
 
 
 class Dashboard extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.deletePost = this.deletePost.bind(this)
+        this.seeState = this.seeState.bind(this)
         this.state = {
             posteToSend: '',
             postes: []
         }
     }
+
+    
+
     handleChange = event => {
         const targetName = event.target.name
     this.setState({[targetName]: event.target.value})
@@ -31,16 +36,28 @@ class Dashboard extends Component {
         }
         console.log(dataToEmit)
         socket.emit('posteData', dataToEmit)
+        this.setState({posteToSend: ""})
         
     }
+
+    seeState() {
+        console.log(this.state)
+    }
+
+    deletePost(i) {
+        console.log(i)
+        let newState = this.state.postes
+        newState.splice(i, 1)
+        console.log(newState);
+        this.setState({postes: newState})
+        console.log(this.state.postes)
+    }
+
 
     componentDidMount() {
         axios.get(`http://localhost:8080/feed/${this.props.userData.id}` )
         .then(res => {
-            let postes = res.data.sort((a, b) => { //trier par id et donc creation
-                return b.id - a.id
-            })
-            this.setState({postes: postes})
+            this.setState({postes: res.data})
         })
         socket = io('localhost:8080')
         
@@ -76,13 +93,16 @@ class Dashboard extends Component {
             
                 <div className="feed">
                 <form onSubmit={this.handleSubmit}>
-                        <textarea placeholder="Racontez-nous quelque chose..." name="posteToSend" onChange={this.handleChange}></textarea>
+                        <textarea placeholder="Racontez-nous quelque chose..." name="posteToSend" onChange={this.handleChange} value={this.state.posteToSend}></textarea>
                         <button className="full-btn">Publier</button>
+                        
+
                     </form>
-                
+                    {/* <button onClick={this.seeState} className="full-btn">See State</button> */}
                     {
-                        this.state.postes.map((element, index) => {
-                           return <SinglePost dataFromParent = {element} key={index}/>
+                        this.state.postes.map((element, i) => {
+                            element.postIndex = i
+                           return  <SinglePost deleteThePost= {this.deletePost} dataFromParent= {element} key={`${element.nom}-${i}-${Math.random()}`}/>
                            
                         })
                     }

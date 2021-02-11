@@ -9,6 +9,14 @@ const AdminDashboard = () => {
     const adminLogged = useSelector(state => state.adminStore.isLogged)
     const [postesState, setPostes] = useState([])
 
+    const deletePost = (i) => {
+        console.log(postesState)
+        let newState = postesState
+        newState.splice(i, 1)
+        setPostes(newState)
+        console.log(postesState)
+
+    }
 
     useEffect(() => {
         if (adminLogged) {
@@ -26,7 +34,8 @@ const AdminDashboard = () => {
             <h1>Admin Dashboard</h1>
             {
                 postesState.map((e, i) => {
-                    return <SinglePost dataFromParent = {e} key={i}/>
+                    e.index = i
+                    return <SinglePost deleteThePost={deletePost} dataFromParent = {e} key={`${e.nom}-${i}-${Math.random()}`}/>
                 })
             }
         </div>

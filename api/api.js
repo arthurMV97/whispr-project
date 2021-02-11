@@ -58,14 +58,7 @@ app.post("/post", (req, res) => { //Manque prise en compte des images
     
 })
 
-app.delete("/post/:id", (req, res) => {
-    const id = req.params.id
 
-    connection.query(`DELETE FROM post WHERE id = ${id}`, (err, result) => {
-        if (err) throw err 
-        res.status(200).send(`Le post numéro ${id} a bien été supprimé`)
-    })
-})
 
 
 

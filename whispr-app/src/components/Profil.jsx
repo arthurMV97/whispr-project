@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import MesPostes from "./MesPostes";
 import MesFavoris from "./MesFavoris";
+import PopUpAbonnements from "./PopUpAbonnements";
+
 import { useSelector } from 'react-redux';
 
 
@@ -11,9 +13,11 @@ const Profil = (props) => {
     const [postesState, setPostes] = useState([])
     const [favorisState, setFavoris] = useState([])
     const [displayUserData, setUserData] = useState({})
+    const [popUpBool, setPopUpBool] = useState({display: false, abonnements: true})
+
     const { id } = useParams()
     const userId = useSelector(state => state.userStore.id)
-    console.log(id === userId, id, userId)
+
 
 
     useEffect(() => {
@@ -42,6 +46,11 @@ const Profil = (props) => {
         setBool(bool)
         
     }
+
+    const displayPopUp = (bool1, bool2) => {
+        setPopUpBool({display: bool1, abonnements: bool2})
+        console.log(popUpBool);
+    }
     return (
         <div className="profil-page">
             <div className="profil">
@@ -55,17 +64,20 @@ const Profil = (props) => {
             <p>{displayUserData.description}</p>
             <p>Lieu: {displayUserData.lieu}</p>
             <div className="abonnement-infos"></div>
-            <p>Abonnements: {displayUserData.abonnements}</p>
-            <p>Abonnés: {displayUserData.abonnes}</p>
+            <button onClick={() => displayPopUp(true, true)}>Abonnements: {displayUserData.abonnements}</button>
+            <button onClick={() => displayPopUp(true, false)}>Abonnés: {displayUserData.abonnes}</button>
             </div>
+            {popUpBool.display && <PopUpAbonnements bool={popUpBool.abonnements} closePopUp={displayPopUp} /> }
+
             <ul className="nav-list">
-                    <li><button onClick={() => changeComponent(true)} className={boolState ? "clicked" : null }>Mes Postes</button></li>
-                    <li><button onClick={() => changeComponent(false)} className={!boolState ? "clicked" : null }>Mes Favoris</button></li>
+                    <li><button onClick={() => changeComponent(true)} className={boolState ? "clicked" : null}>Mes Postes</button></li>
+                    <li><button onClick={() => changeComponent(false)} className={boolState ? "clicked" : null}>Mes Favoris</button></li>
                 </ul>
             <div className="profil-feed">
-                
                 {boolState ? <MesPostes postes = {postesState} /> : <MesFavoris favoris = {favorisState}/>}
             </div>
+
+            
         </div>
     );
 };

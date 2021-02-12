@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { useSelector } from 'react-redux';
 import SinglePost from './SinglePoste'
 
@@ -8,12 +8,15 @@ import SinglePost from './SinglePoste'
 const AdminDashboard = () => {
     const adminLogged = useSelector(state => state.adminStore.isLogged)
     const [postesState, setPostes] = useState([])
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []); //Permet de forcer l'update
 
     const deletePost = (i) => {
         console.log(postesState)
         let newState = postesState
         newState.splice(i, 1)
         setPostes(newState)
+        forceUpdate()
         console.log(postesState)
 
     }

@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 
 const ProfileResume = (props) => {
+    // const nbAbonnements = props.displayUserData['abonnements'].length
+    // const nbAbonnes = props.displayUserData['abonnes'].length
+
     useEffect(() => {
         console.log(props.displayUserData);
     }, [])
@@ -15,8 +18,8 @@ const ProfileResume = (props) => {
                 <p>Lieu: {props.displayUserData.lieu}</p>
             </div>
             <div className="abonnement-infos">
-                <p>Abonnements: {props.displayUserData.abonnements}</p>
-                <p>Abonnés: {props.displayUserData.abonnes}</p>
+                <p>Abonnements: {props.displayUserData.nbAbonnements}</p>
+                <p>Abonnés: {props.displayUserData.nbAbonnes}</p>
             </div>
             
 

@@ -50,7 +50,7 @@ const PopUpAbonnements = ({bool, closePopUp}) => {
                 }
             </div>
         <div className="close-part">
-            <button onClick={() => closeFct()} className="full-btn close-btn">Close</button>
+            <button onClick={() => closeFct()} className="empty-btn close-btn">Close</button>
 
         </div>
         </div>

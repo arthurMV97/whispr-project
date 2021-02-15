@@ -414,7 +414,7 @@ h1 {
 }
 
 .pop-up {
-    border: $my-yellow solid 1px;
+    border: $border-color solid 1px;
     border-radius: 1em;
     background-color: $dark-background;
     width: fit-content;
@@ -425,7 +425,6 @@ h1 {
 	left: 0;
     right: 0;
     margin: auto;
-    overflow: hidden;
     justify-content: center;
 
     .nav-btn {
@@ -451,13 +450,15 @@ h1 {
         }
     }
     .close-part {
-
+        border-top: $border-color solid 1px;
+        border: $test;
         text-align: center;
-        margin: 1em auto; 
+        margin: 0 auto; 
         position: absolute;
         bottom: 0;      
         width: 100%;
         .close-btn {
+            margin: 1em;
             width: 6vw;
             height: 5vh;
         }
@@ -496,5 +497,9 @@ h1 {
         }
         
     } 
+
+    form {
+        
+    }
 
 }

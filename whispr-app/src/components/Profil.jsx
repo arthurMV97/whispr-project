@@ -24,13 +24,11 @@ const Profil =  (props) => {
     const userId = useSelector(state => state.userStore.id)
     const isAdmin = useSelector(state => state.adminStore.isLogged)
     let userSuivi =  props.displayAbonnements.abonnements && (props.displayAbonnements.abonnements.find(  e =>  e === id) || false) //Problème rencontré: au render props => undefined donc on fait une condition
-
     useEffect(() => {
         if (id) {
             setBool(true)
             axios.get(`http://localhost:8080/profile/${id}`)
             .then(res => {
-                console.log("user data", res.data)
                 let newData = res.data
                 const splitted = {
                     abonnements: res.data.abonnements.split(','),
@@ -39,7 +37,6 @@ const Profil =  (props) => {
                 splitted.nbAbonnements =  splitted.abonnements.length
                 splitted.nbAbonnes =  splitted.abonnes.length
                 newData = {...newData, ...splitted}
-                console.log('update:', newData)
 
                 setUserData(newData)
       })
@@ -61,6 +58,16 @@ const Profil =  (props) => {
         setBool(bool)
         
     }
+
+    const updateUserData = (data) => {
+        let myData = displayUserData
+        myData = {...data}
+        setUserData(myData)
+        console.log('Profile', myData);
+        props.updateUserData(myData)
+
+        
+    } 
 
     const deleteUser = (id) => {
         axios.delete(`http://localhost:8080/user/${id}`)
@@ -96,14 +103,14 @@ const Profil =  (props) => {
             <button onClick={() => displayPopUp(true, false)}>Abonnés: {displayUserData.nbAbonnes}</button>
             </div>
             {popUpBool.display && <PopUpAbonnements bool={popUpBool.abonnements} closePopUp={displayPopUp} /> }
-            {modifPopUpBool && <ModifyProfile  closeModif={displayModif} /> }
+            {modifPopUpBool && <ModifyProfile  modifyData={updateUserData} userData = {displayUserData} closeModif={displayModif} /> }
 
             <ul className="nav-list">
                     <li><button onClick={() => changeComponent(true)} className={boolState ? "clicked" : null}>Mes Postes</button></li>
                     <li><button onClick={() => changeComponent(false)} className={!boolState ? "clicked" : null}>Mes Favoris</button></li>
                 </ul>
             <div className="profil-feed">
-                {boolState ? <MesPostes postes = {postesState} /> : <MesFavoris favoris = {favorisState}/>}
+                {boolState ? <MesPostes postes = {postesState} user = {displayUserData} /> : <MesFavoris favoris = {favorisState}/>}
             </div>
 
             

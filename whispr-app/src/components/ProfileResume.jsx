@@ -1,25 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ProfileResume = (props) => {
     // const nbAbonnements = props.displayUserData['abonnements'].length
     // const nbAbonnes = props.displayUserData['abonnes'].length
 
-    useEffect(() => {
-        console.log(props.displayUserData);
-    }, [])
+    const [userData, setUserData] = useState(props.displayUserData)
+
+    if (props.displayUserData !== userData) {  //peut etre inutil ? A voir si fonctionne sans
+        setUserData(props.displayUserData)
+        console.log('Home', props.displayUserData);
+    }
+
+
     return (
         <div className="profil-infos">
             <div className="user">
-                <img src={props.displayUserData.image} alt={"profile-user" + props.displayUserData.id}/>
-                <p>{props.displayUserData.prenom + ' ' + props.displayUserData.nom}</p>
+                <img src={userData.image} alt={"profile-user" + userData.id}/>
+                <p>{userData.prenom + ' ' + userData.nom}</p>
             </div>
             <div className="user-infos">
-                <p>{props.displayUserData.description}</p>
-                <p>Lieu: {props.displayUserData.lieu}</p>
+                <p>{userData.description}</p>
+                <p>Lieu: {userData.lieu}</p>
             </div>
             <div className="abonnement-infos">
-                <p>Abonnements: {props.displayUserData.nbAbonnements}</p>
-                <p>Abonnés: {props.displayUserData.nbAbonnes}</p>
+                <p>Abonnements: {userData.nbAbonnements}</p>
+                <p>Abonnés: {userData.nbAbonnes}</p>
             </div>
             
 

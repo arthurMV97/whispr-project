@@ -25,6 +25,11 @@ const MesPostes = (props) => {
     return (
         <div>
             {postesState.map((element, index) => {
+                if (props.user) {
+                    element.nom = props.user.nom
+                    element.prenom = props.user.prenom
+
+                }
                 element.index = index
                 return <SinglePost deleteThePost= {deletePost} dataFromParent= {element} key={`${element.nom}-${index}-${Math.random()}`}/>
                                 })}

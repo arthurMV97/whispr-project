@@ -23,11 +23,16 @@ function App() {
   const isAdmin = useSelector(state => state.adminStore.isLogged)
   const [userData, setUserData] = useState({})
   
-  useEffect(() => {
+
+  const updateData = (data)  => {
+    console.log("app-re-render", data)
+    setUserData(data)
+  }
+
+  useEffect( () => {
     if (isUserLogged) {
-      axios.get(`http://localhost:8080/profile/${userId}`)
+     axios.get(`http://localhost:8080/profile/${userId}`)
       .then(res => {
-        console.log("user data", res.data)
 
         let newData = res.data
         const splitted = {
@@ -39,11 +44,11 @@ function App() {
        splitted.nbAbonnements =  splitted.abonnements.length
        splitted.nbAbonnes =  splitted.abonnes.length
         newData = {...newData, ...splitted}
-        console.log('update:', newData)
-
         setUserData(newData)
       })
     }
+    console.log('App', userData);
+
    
 }, [isUserLogged, userId])
 
@@ -58,7 +63,7 @@ function App() {
           </Route>
 
            <Route path="/decouvrir"> {isUserLogged ? <Decouvrir displayUserData = {userData} /> : <Redirect to="/"/>} </Route>
-         <Route path="/profil/:id">  {isUserLogged || isAdmin? <Profil displayAbonnements = {{abonnements: userData.abonnements, abonnes: userData.abonnes}}/>  : <Redirect to="/"/> }</Route>
+         <Route path="/profil/:id">  {isUserLogged || isAdmin? <Profil updateUserData ={updateData} displayAbonnements = {{abonnements: userData.abonnements, abonnes: userData.abonnes}}/>  : <Redirect to="/"/> }</Route>
           
           <Route path="/connexion">
             {!isUserLogged ? <Connexion /> : <Redirect to="/"/>}

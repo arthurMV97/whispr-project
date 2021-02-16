@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom'
 import Dashboard from './Dashboard'
 import { useSelector } from 'react-redux';
@@ -6,12 +6,19 @@ import { useSelector } from 'react-redux';
 
 const Home = (props) => {
     const isLogged = useSelector(state => state.userStore.isLogged )
-    useEffect(() => {
 
-    }, [])
+
+    const [userData, setUserData] = useState(props.displayUserData)
+
+    if (props.displayUserData !== userData) { //peut etre inutil ? A voir si fonctionne sans
+        setUserData(props.displayUserData)
+        console.log('Home', props.displayUserData);
+    }
+    
+
     return (
         <div>
-            {isLogged ? <Dashboard displayUserData = {props.displayUserData} />:
+            {isLogged ? <Dashboard displayUserData = {userData} />:
             <div>
                 <h1>Bienvenue sur Whispr !</h1>
                 <div className="connexions">

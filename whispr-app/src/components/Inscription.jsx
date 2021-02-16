@@ -128,8 +128,13 @@ class Inscription extends Component {
         
        if (isFormValid) {
         if (this.state.confirmation === this.state.password) {
-            const user = this.state
-            delete user.confirmation
+            const user = {
+                nom: this.state.nom.content,
+                prenom: this.state.prenom.content,
+                date: this.state.date.content,
+                email: this.state.email.content,
+                password: this.state.password.content,
+                        }
 
             axios.post('http://localhost:8080/sign-up', user)
                 .then(res => {

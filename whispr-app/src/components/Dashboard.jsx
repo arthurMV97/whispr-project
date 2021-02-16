@@ -6,6 +6,10 @@ import SinglePost from './SinglePoste'
 import ProfileResume from './ProfileResume'
 let socket
 
+// const [userData, setUserData] = useState({})
+// useEffect(() => {
+//     setUserData(props.displayUserData)
+// }, [props.displayUserData])
 
 class Dashboard extends Component {
     constructor(props) {
@@ -14,11 +18,22 @@ class Dashboard extends Component {
         this.seeState = this.seeState.bind(this)
         this.state = {
             posteToSend: '',
-            postes: []
+            postes: [],
+            userData: {}
         }
     }
 
-    
+
+    static getDerivedStateFromProps(props, state) {  //peut etre inutil ? A voir si fonctionne sans
+        if (props.displayUserData !== state.userData) {
+            console.log('Dashboard', state.userData);
+            console.log("hello", props.displayUserData);
+            
+            return {userData: props.displayUserData}
+        } else {
+            return null
+        }
+    }
 
     handleChange = event => {
         const targetName = event.target.name
@@ -89,7 +104,7 @@ class Dashboard extends Component {
         return (
             <div className="accueil">
                 
-                    <ProfileResume displayUserData = {this.props.displayUserData} />
+                    <ProfileResume displayUserData = {this.state.userData} />
             
                 <div className="feed">
                 <form onSubmit={this.handleSubmit}>

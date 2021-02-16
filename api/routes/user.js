@@ -15,17 +15,19 @@ router.put('/user/:id', (req, res) => {
     const newData = {
         prenom: req.body.prenom,
         nom: req.body.nom,
-        date: req.body.date,
         image: req.body.image,
         description: req.body.description,
         lieu: req.body.lieu
     }
     connection.query(`UPDATE user SET ? WHERE id = ${id}`, newData, (err, result) => {
-        if (result) {
+        if (err) throw err;
+    
+        if (result.length < 1) {
+            res.status(401).send('Les données insérées ne sont pas prises en compte')
+        }
+        else {
             res.status(200).send(`Les informations de ${newData.prenom} ont été mises à jour.`)
 
-        } else {
-            res.status(400).send('Les données insérées ne sont pas prises en compte')
         }
     })
 })

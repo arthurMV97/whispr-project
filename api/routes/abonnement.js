@@ -26,6 +26,7 @@ router.post("/suivre/:id", (req, res) => {
         compte_abonnement_id: req.params.id,
         date: new Date()
     }
+    console.log(followingData)
 
     connection.query("INSERT INTO abonnement SET ?", followingData, (err, result) => {
         if (err) throw err
@@ -38,9 +39,11 @@ router.post("/suivre/:id", (req, res) => {
     })
 })
 
-router.delete("/suivre/:id", (req, res) => {
+router.delete("/suivre/:id/:userId", (req, res) => {
     const idUserToUnfollow = req.params.id
-    const user_id = req.body.user_id //Plus tard dans token
+    const user_id = req.params.userId //Plus tard dans token
+    console.log(idUserToUnfollow, user_id)
+
     
 
     connection.query(`DELETE FROM abonnement WHERE compte_abonnement_id = ${idUserToUnfollow} AND user_id = ${user_id}` , (err, result) => {

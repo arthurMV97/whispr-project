@@ -8,7 +8,7 @@ import HomeAdmin from "./components/HomeAdmin";
 import AdminDashboard from "./components/AdminDashboard";
 import axios from 'axios';
 import React, {useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,7 +22,7 @@ function App() {
   const isUserLogged = useSelector(state => state.userStore.isLogged)
   const isAdmin = useSelector(state => state.adminStore.isLogged)
   const [userData, setUserData] = useState({})
-  
+  const dispatch = useDispatch()
 
   const updateData = (data)  => {
     console.log("app-re-render", data)
@@ -45,6 +45,8 @@ function App() {
        splitted.nbAbonnes =  splitted.abonnes.length
         newData = {...newData, ...splitted}
         setUserData(newData)
+        dispatch({type: 'CONNECT', ...newData})
+
       })
     }
     console.log('App', userData);
@@ -63,7 +65,7 @@ function App() {
           </Route>
 
            <Route path="/decouvrir"> {isUserLogged ? <Decouvrir displayUserData = {userData} /> : <Redirect to="/"/>} </Route>
-         <Route path="/profil/:id">  {isUserLogged || isAdmin? <Profil updateUserData ={updateData} displayAbonnements = {{abonnements: userData.abonnements, abonnes: userData.abonnes}}/>  : <Redirect to="/"/> }</Route>
+         <Route path="/profil/:id">  {isUserLogged || isAdmin? <Profil updateUserData ={updateData} />  : <Redirect to="/"/> }</Route>
           
           <Route path="/connexion">
             {!isUserLogged ? <Connexion /> : <Redirect to="/"/>}

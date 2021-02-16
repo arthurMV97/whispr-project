@@ -5,7 +5,8 @@ import MesPostes from "./MesPostes";
 import MesFavoris from "./MesFavoris";
 import PopUpAbonnements from "./PopUpAbonnements";
 import ModifyProfile from "./ModifyProfile";
-
+import UnfollowBtn from "./UnfollowBtn";
+import FollowBtn from "./FollowBtn";
 
 import { useSelector } from 'react-redux';
 
@@ -19,11 +20,13 @@ const Profil =  (props) => {
     const [modifPopUpBool, setModifPopUpBool] = useState(false)
 
 
+
     const { id } = useParams()
     const history = useHistory();
     const userId = useSelector(state => state.userStore.id)
     const isAdmin = useSelector(state => state.adminStore.isLogged)
-    let userSuivi =  props.displayAbonnements.abonnements && (props.displayAbonnements.abonnements.find(  e =>  e === id) || false) //Problème rencontré: au render props => undefined donc on fait une condition
+    const followingData = useSelector(state => state.abonnementStore)
+    let userSuivi =  followingData.abonnements && (followingData.abonnements.find(  e =>  e === id) || false) //Problème rencontré: au render props => undefined donc on fait une condition
     useEffect(() => {
         if (id) {
             setBool(true)
@@ -88,6 +91,7 @@ const Profil =  (props) => {
     const displayPopUp = (bool1, bool2) => {
         setPopUpBool({display: bool1, abonnements: bool2})
     }
+
     return (
         <div className="profil-page">
             <div className="profil">
@@ -95,15 +99,15 @@ const Profil =  (props) => {
                     <img src={displayUserData.image} alt={"profile-user" + displayUserData.id}/>
                     <p>{displayUserData.prenom + ' ' + displayUserData.nom}</p>
                     {parseInt(id) === userId ? <button className="full-btn"onClick={() => displayModif(true)}>Modifier</button> : isAdmin ? <button className="full-btn" onClick={() => deleteUser(id)}>Supprimer</button> : 
-                    userSuivi ? <button className="empty-btn">Suivi(e)</button> : <button className="full-btn">Suivre</button>}
+                    userSuivi ? <UnfollowBtn/> : <FollowBtn/>}
 
                 </div>
             
             <p>{displayUserData.description}</p>
             <p>Lieu: {displayUserData.lieu}</p>
             <div className="abonnement-infos"></div>
-            <button onClick={() => displayPopUp(true, true)}>Abonnements: {displayUserData.nbAbonnements}</button>
-            <button onClick={() => displayPopUp(true, false)}>Abonnés: {displayUserData.nbAbonnes}</button>
+            <button onClick={() => displayPopUp(true, true)}>Abonnements: {id === userId ? followingData.nbAbonnements : displayUserData.nbAbonnements}</button>
+            <button onClick={() => displayPopUp(true, false)}>Abonnés: {id === userId ? followingData.nbAbonnes : displayUserData.nbAbonnes}</button>
             </div>
             {popUpBool.display && <PopUpAbonnements bool={popUpBool.abonnements} closePopUp={displayPopUp} /> }
             {modifPopUpBool && <ModifyProfile  modifyData={updateUserData} userData = {displayUserData} closeModif={displayModif} /> }

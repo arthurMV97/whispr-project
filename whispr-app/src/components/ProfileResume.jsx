@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
 
 const ProfileResume = (props) => {
     // const nbAbonnements = props.displayUserData['abonnements'].length
     // const nbAbonnes = props.displayUserData['abonnes'].length
 
     const [userData, setUserData] = useState(props.displayUserData)
+    const followingData = useSelector(state => state.abonnementStore)
+
 
     if (props.displayUserData !== userData) {  //peut etre inutil ? A voir si fonctionne sans
         setUserData(props.displayUserData)
@@ -23,8 +27,8 @@ const ProfileResume = (props) => {
                 <p>Lieu: {userData.lieu}</p>
             </div>
             <div className="abonnement-infos">
-                <p>Abonnements: {userData.nbAbonnements}</p>
-                <p>Abonnés: {userData.nbAbonnes}</p>
+                <p>Abonnements: {followingData.nbAbonnements}</p>
+                <p>Abonnés: {followingData.nbAbonnes}</p>
             </div>
             
 

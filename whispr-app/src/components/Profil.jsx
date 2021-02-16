@@ -61,7 +61,10 @@ const Profil =  (props) => {
 
     const updateUserData = (data) => {
         let myData = displayUserData
-        myData = {...data}
+        console.log('1',myData);
+        Object.assign(myData, data) // update multiple properties of object 
+        console.log('2',myData);
+
         setUserData(myData)
         console.log('Profile', myData);
         props.updateUserData(myData)

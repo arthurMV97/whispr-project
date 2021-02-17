@@ -99,7 +99,7 @@ const Profil =  (props) => {
                     <img src={displayUserData.image} alt={"profile-user" + displayUserData.id}/>
                     <p>{displayUserData.prenom + ' ' + displayUserData.nom}</p>
                     {parseInt(id) === userId ? <button className="full-btn"onClick={() => displayModif(true)}>Modifier</button> : isAdmin ? <button className="full-btn" onClick={() => deleteUser(id)}>Supprimer</button> : 
-                    userSuivi ? <UnfollowBtn/> : <FollowBtn/>}
+                    !userSuivi ?<FollowBtn/> : <UnfollowBtn/> }
 
                 </div>
             

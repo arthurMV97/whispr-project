@@ -16,16 +16,19 @@ const abonnementStore = (state = initialState, action) => {
                 nbAbonnes: action.nbAbonnes
             }
         case 'FOLLOW': 
+            console.log(action);
             let abon = state.abonnements
-            abon.push(action.idToPush)
+            abon.push(action.id)
             let nbAbon = abon.length
             return {
+                    ...state,
                     abonnements: abon,
                     nbAbonnements: nbAbon,
-                    ...state };
+                     };
         case 'UNFOLLOW': 
+                 console.log(action);
                 let abonn = state.abonnements
-                abonn.splice(abonn.findIndex(e => e === action.idToDelete), 1)
+                abonn.splice(abonn.findIndex(e => e === action.id), 1)
                 let nbAbonn = abonn.length
 
             return {...state, 

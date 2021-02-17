@@ -10,10 +10,11 @@ const FollowBtn = (props) => {
     const dispatch = useDispatch()
 
     const followingUser = () => {
-        const numId = parseInt(id)
+        const numId = id
         axios.post(`http://localhost:8080/suivre/${numId}`, {user_id: userId}).then(res => {
             console.log(res.data)
             dispatch({type: 'FOLLOW', id: numId})
+            
 
         })
     }

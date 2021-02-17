@@ -11,7 +11,7 @@ const UnfollowBtn = () => {
     const dispatch = useDispatch()
 
     const unfollowingUser = () => {
-        const numId = parseInt(id)
+        const numId = id
         axios.delete(`http://localhost:8080/suivre/${numId}/${userId}`).then(res => {
             console.log(res.data);
             dispatch({type: 'UNFOLLOW', id: numId})

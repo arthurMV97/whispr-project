@@ -9,13 +9,16 @@ export const sendFollowers = (data) => {
 }
 
 export const followingUser = (id) => {
+    console.log(id);
+
     return {type: 'FOLLOW',
-            idToPush: id
+            id: id
             }
 }
 
 export const unfollowingUser = (id) => {
+    console.log(id);
     return {type: 'UNFOLLOW',
-            idToDelete: id
+            id: id
             }
 }

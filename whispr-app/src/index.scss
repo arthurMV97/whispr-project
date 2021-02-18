@@ -224,6 +224,9 @@ h1 {
     margin: 1em auto ;
     padding: 1em;
     width: 60vw;
+    display: flex;
+    justify-content: space-between;
+    
     .user {
         img {
             margin-top: 0.3em;
@@ -247,7 +250,62 @@ h1 {
             } 
          }
     }
+    
+        
 
+    .interactions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+            .img-bloc {
+                display: flex;
+                width: min-content;
+                margin-top: 0.5em;
+                button {
+                   border: none;
+                    width: 2vw;
+                    height: 4vh;
+                    background-color: inherit;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    cursor: pointer;
+                    
+                }
+                .btn-fav{
+                    
+                    background-image: url("./files/grey-heart.png");
+                    background-size: 106% ;
+                    &:hover {
+                        background-image: url("./files/yellow-heart.png");
+                    }
+                    
+                    
+                }
+                .btn-com {
+                    background-image: url("./files/grey-comment.png");
+                    background-size: 130% ;
+                    &:hover {
+                        background-image: url("./files/yellow-comment.png");
+                    }
+                }
+                .btn-delete {
+                    align-self: flex-start;
+                    background-image: url("./files/grey-bin.png");
+                    background-size: 120% ;
+                    &:hover {
+                        background-image: url("./files/yellow-bin.png");
+                    }
+
+                }
+                p {
+                    color: $border-color;
+                    padding: 0.2em 0.5em 0 0.5em;
+                    margin: 0;
+                    
+                }
+        
+    }
+}
     
 }
 

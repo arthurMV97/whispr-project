@@ -3,6 +3,8 @@ import Separation from './Separation';
 import {Link} from 'react-router-dom'
 import { connect } from 'react-redux';
 import axios from 'axios';
+import Commentaires from './Commentaires'
+import Favoris from './Favoris'
 
 
 
@@ -39,22 +41,27 @@ class SinglePoste extends Component {
 
                 <div className="poste" >
 
-               
-
+                
+                <div>
                     <div className="user">                       
                             <Link to={`/profil/${this.state.data.user_id}`}><img src={this.state.data.image} alt={"profile-user" + this.state.data.user_id}/></Link>
                             <Link to={`/profil/${this.state.data.user_id}`}><p>{this.state.data.prenom + ' ' + this.state.data.nom}</p></Link>
                     </div>
+                    
                     <div className="content">
                     <p>{this.state.data.content}</p>
                     <p>{this.state.data.date}</p>
                     </div>
+                </div>
                     <div className="interactions">
-                                   <button>Favoris ({this.state.data.TotalFavoris})</button>
-                                   <button>Commentaires ({this.state.data.TotalComment})</button>
-                                   { this.props.userId === this.state.data.user_id || this.props.isAdmin ? <button onClick={this.deletePost} >Supprimer</button> : null}
-
+                                   <Favoris nbFavoris ={this.state.data.TotalFavoris}/>
+                                   <Commentaires nbCommentaires={this.state.data.TotalComment}/>
+                                   <div className="img-bloc">
+                                   { this.props.userId === this.state.data.user_id || this.props.isAdmin ? <button onClick={this.deletePost} className="btn-delete"></button> : null}
+                                   </div>
                     </div>
+
+                    
                                
                                
                                

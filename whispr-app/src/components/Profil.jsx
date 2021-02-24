@@ -19,14 +19,14 @@ const Profil =  (props) => {
     const [popUpBool, setPopUpBool] = useState({display: false, abonnements: true})
     const [modifPopUpBool, setModifPopUpBool] = useState(false)
 
-
-
     const { id } = useParams()
     const history = useHistory();
     const userId = useSelector(state => state.userStore.id)
     const isAdmin = useSelector(state => state.adminStore.isLogged)
     const followingData = useSelector(state => state.abonnementStore)
     let userSuivi =  followingData.abonnements && (followingData.abonnements.find(  e =>  e === id) || false) //Problème rencontré: au render props => undefined donc on fait une condition
+
+
     useEffect(() => {
         if (id) {
             setBool(true)

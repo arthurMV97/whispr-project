@@ -20,18 +20,18 @@ const MesPostes = (props) => {
     useEffect(() => {
         setPostes(props.postes)
 
-    })
+    }, [props.postes])
 
     return (
         <div>
-            {postesState.map((element, index) => {
+            {props.postes.map((element, index) => {
                 if (props.user) {
                     element.nom = props.user.nom
                     element.prenom = props.user.prenom
 
                 }
-                element.index = index
-                return <SinglePost deleteThePost= {deletePost} dataFromParent= {element} key={`${element.nom}-${index}-${Math.random()}`}/>
+                element.postIndex = index
+                return <SinglePost key={`${element.nom}-${index}-${Math.random()}`} deleteThePost= {deletePost} dataFromParent= {element} />
                                 })}
         </div>
     );

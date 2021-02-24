@@ -16,7 +16,7 @@ class SinglePoste extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount() { //emp^che les données d'arriver 
         this.setState({data: this.props.dataFromParent})
 
     }
@@ -24,6 +24,7 @@ class SinglePoste extends Component {
     deletePost = () => {
         console.log(this.state.data);
         let index = this.state.data.postIndex
+        
             this.props.deleteThePost(index)
         axios.delete(`http://localhost:8080/post/${this.state.data.id}`)
         .then(res => {
@@ -44,20 +45,20 @@ class SinglePoste extends Component {
                 
                 <div>
                     <div className="user">                       
-                            <Link to={`/profil/${this.state.data.user_id}`}><img src={this.state.data.image} alt={"profile-user" + this.state.data.user_id}/></Link>
-                            <Link to={`/profil/${this.state.data.user_id}`}><p>{this.state.data.prenom + ' ' + this.state.data.nom}</p></Link>
+                            <Link to={`/profil/${this.props.dataFromParent.user_id}`}><img src={this.props.dataFromParent.image} alt={"profile-user" + this.props.dataFromParent.user_id}/></Link>
+                            <Link to={`/profil/${this.props.dataFromParent.user_id}`}><p>{this.props.dataFromParent.prenom + ' ' + this.props.dataFromParent.nom}</p></Link>
                     </div>
                     
                     <div className="content">
-                    <p>{this.state.data.content}</p>
-                    <p>{this.state.data.date}</p>
+                    <p>{this.props.dataFromParent.content}</p>
+                    <p>{this.props.dataFromParent.date}</p>
                     </div>
                 </div>
                     <div className="interactions">
-                                   <Favoris nbFavoris ={this.state.data.TotalFavoris}/>
-                                   <Commentaires nbCommentaires={this.state.data.TotalComment}/>
+                                   <Favoris nbFavoris ={this.props.dataFromParent.TotalFavoris}/>
+                                   <Commentaires nbCommentaires={this.props.dataFromParent.TotalComment}/>
                                    <div className="img-bloc">
-                                   { this.props.userId === this.state.data.user_id || this.props.isAdmin ? <button onClick={this.deletePost} className="btn-delete"></button> : null}
+                                   { this.props.userId === this.props.dataFromParent.user_id || this.props.isAdmin ? <button onClick={this.deletePost} className="btn-delete"></button> : null}
                                    </div>
                     </div>
 

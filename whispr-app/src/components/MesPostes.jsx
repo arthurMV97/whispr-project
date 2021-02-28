@@ -1,11 +1,10 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import SinglePost from './SinglePoste'
 
 const MesPostes = (props) => {
 
     const [postesState, setPostes] = useState([])
     const [, updateState] = useState();
-    const forceUpdate = useCallback(() => updateState({}), []); //Permet de forcer l'update
 
     const deletePost = (i) => {
         console.log(i)
@@ -13,7 +12,6 @@ const MesPostes = (props) => {
         newState.splice(i, 1)
         console.log(newState);
         setPostes(newState)
-        forceUpdate()
         console.log(postesState)
     }
 

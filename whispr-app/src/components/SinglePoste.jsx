@@ -1,25 +1,82 @@
 import React, { Component } from 'react';
-import Separation from './Separation';
+import Commentaires from './Commentaires';
+
 import {Link} from 'react-router-dom'
 import { connect } from 'react-redux';
 import axios from 'axios';
-import Commentaires from './Commentaires'
-import Favoris from './Favoris'
+import { io } from 'socket.io-client';
+let socket = io('localhost:8080')
+
 
 
 
 class SinglePoste extends Component {
+    _isMounted = false
     constructor() {
         super();
         this.state = {
-            data: {}
+            data: {},
+            isLiked: false,
+            commentPopUp: false,
+            newComment: {}
+
         }
     }
 
-    componentDidMount() { //emp^che les données d'arriver 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (prevState.data !== nextProps.dataFromParent) {
+            return {
+                data: nextProps.dataFromParent
+            }
+        }
+        return null
+    }
+
+    componentDidMount() { //emp^che les données d'arriver au render donc props au render et state aux fcts
+    this._isMounted = true
+    const data = {
+        id: this.props.dataFromParent.id,
+        user: this.props.dataFromParent.prenom
+    }
+
+    if (this._isMounted) {
         this.setState({data: this.props.dataFromParent})
+        // axios.get()
+        
+        socket.emit('rooming', data )
+
+        socket.on('liked-post', (data) => {
+            console.log('data back', data);
+            if (this.state.data.id === data.postId) {
+                this.setState({isLiked: true})
+            }
+        })
+        socket.on('unliked-post', (data) => {
+            console.log('data back', data);
+            if (this.state.data.id === data.postId) {
+                this.setState({isLiked: false})
+            }
+        }) 
+        socket.on('add-new-comment', data => {
+            // console.log(data, );
+            this.setState({newComment: data})
+        })
+
+        
 
     }
+    return () => {
+        socket.emit('leave-room', data)
+    }
+        
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false
+
+    }
+
+    
 
     deletePost = () => {
         console.log(this.state.data);
@@ -35,39 +92,70 @@ class SinglePoste extends Component {
 
     }
 
+    likePost = () => {
+        const data = {
+            postId: this.state.data.id,
+            postUser: this.state.data.prenom,
+            userId: this.props.userId
+        }
+        
+        socket.emit('like-post', data)
+    }
+
+    unlikePost = () => {
+        const data = {
+            postId: this.state.data.id,
+            postUser: this.state.data.prenom,
+            userId: this.props.userId
+        }
+        socket.emit('unlike-post', data)
+    }
+
+    openCommentPopUp = () => {
+        this.setState({commentPopUp: true})
+    }
+
+    closeCommentPopUp = () => {
+        this.setState({commentPopUp: false})
+    }
+
     render() {
         return (
             <div>
 
-
+                {this.state.commentPopUp &&   <Commentaires data = {this.state.data} newComment = {this.state.newComment} closeCommentPopUp = {this.closeCommentPopUp}/> }
                 <div className="poste" >
 
                 
                 <div>
                     <div className="user">                       
-                            <Link to={`/profil/${this.props.dataFromParent.user_id}`}><img src={this.props.dataFromParent.image} alt={"profile-user" + this.props.dataFromParent.user_id}/></Link>
-                            <Link to={`/profil/${this.props.dataFromParent.user_id}`}><p>{this.props.dataFromParent.prenom + ' ' + this.props.dataFromParent.nom}</p></Link>
+                            <Link to={`/profil/${this.state.data.user_id}`}><img src={this.state.data.image} alt={"profile-user" + this.state.data.user_id}/></Link>
+                            <Link to={`/profil/${this.state.data.user_id}`}><p>{this.state.data.prenom + ' ' + this.state.data.nom}</p></Link>
                     </div>
                     
                     <div className="content">
-                    <p>{this.props.dataFromParent.content}</p>
-                    <p>{this.props.dataFromParent.date}</p>
+                    <p>{this.state.data.content}</p>
+                    <p>{this.state.data.date}</p>
                     </div>
                 </div>
                     <div className="interactions">
-                                   <Favoris nbFavoris ={this.props.dataFromParent.TotalFavoris}/>
-                                   <Commentaires nbCommentaires={this.props.dataFromParent.TotalComment}/>
-                                   <div className="img-bloc">
-                                   { this.props.userId === this.props.dataFromParent.user_id || this.props.isAdmin ? <button onClick={this.deletePost} className="btn-delete"></button> : null}
-                                   </div>
-                    </div>
+                                   
+                                    <div className="img-bloc">
+                                        {this.state.isLiked ? <button className="btn-fav-done" onClick={this.unlikePost}></button> : <button className="btn-fav" onClick={this.likePost}></button>}
+                                        <p>{this.state.data.TotalFavoris}</p>
+                                    </div>
+                                   
+                                    <div className="img-bloc">
+                                        <button className="btn-com" onClick={this.openCommentPopUp}></button>
+                                        <p>{this.state.data.TotalComment}</p>
+                                    </div>
 
-                    
-                               
-                               
-                               
+                                   <div className="img-bloc">
+                                   { this.props.userId === this.state.data.user_id || this.props.isAdmin ? <button onClick={this.deletePost} className="btn-delete"></button> : null}
+                                   </div>
+                    </div>        
                 </div>
-                <Separation />
+
             </div>
         );
     }

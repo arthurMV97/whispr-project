@@ -88,6 +88,9 @@ class Dashboard extends Component {
                 user: this.props.userData.id
             }
             socket.emit('socket-id', idUser ) //Envoyer l'id user et l'id socket correspondant
+
+            
+
           });
 
           socket.on('new-post', (data) => {
@@ -95,6 +98,7 @@ class Dashboard extends Component {
                 this.setState({postes: newState})
                 console.log(this.state.postes)
           })
+          
           
       
     }

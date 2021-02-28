@@ -142,6 +142,8 @@ io.on('connection', socket => {
             content: data.content,
             TotalFavoris: 0,
             TotalComment: 0,
+            date: new Date(),
+
         }
         console.log(sendToFront)
         connection.query("INSERT INTO post SET ?", posteToDB, (err, res) => {
@@ -152,7 +154,7 @@ io.on('connection', socket => {
             else {
                 connection.query(`SELECT abonnement.user_id FROM abonnement WHERE abonnement.compte_abonnement_id = ${data.user_id}`, (err, result) => {
                     if (err) throw err
-                    console.log(result)
+                    console.log('155', result)
                     connectedUsers.forEach(e => {
                         if (result.find(elem => e.user === elem.user_id)) { //SI l'id de la db est egal a un des id du tableau connected user
                             console.log(e.user, e.socket)
@@ -164,6 +166,28 @@ io.on('connection', socket => {
                 })
             }
         })
+    })
+    socket.on('rooming', (data) => {
+        socket.join(`room-${data.user}-${data.id}`)
+        console.log(`joining: room-${data.user}-${data.id}`);
+    })
+
+    socket.on('leave-room', (data) => {
+        socket.leave(`room-${data.user}-${data.id}`)
+     
+    })
+
+    socket.on('like-post', (data) => {
+        console.log(data)
+        io.in(`room-${data.postUser}-${data.postId}`).emit('liked-post', data)
+    })
+    socket.on('unlike-post', (data) => {
+        io.in(`room-${data.postUser}-${data.postId}`).emit('unliked-post', data)
+    })
+
+    socket.on('new-comment', data => {
+        console.log(data);
+        io.in(data.room).emit('add-new-comment', data)
     })
 })
 

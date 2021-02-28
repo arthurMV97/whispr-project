@@ -275,12 +275,15 @@ h1 {
                     
                     background-image: url("./files/grey-heart.png");
                     background-size: 106% ;
-                    &:hover {
-                        background-image: url("./files/yellow-heart.png");
-                    }
-                    
                     
                 }
+                .btn-fav-done{
+                    
+                    background-image: url("./files/yellow-heart.png");
+                    background-size: 106% ;
+                    
+                }
+
                 .btn-com {
                     background-image: url("./files/grey-comment.png");
                     background-size: 130% ;
@@ -557,4 +560,145 @@ h1 {
 
     
 
+}
+
+.comment-box {
+    // border: $border-color solid 1px;
+    // border-radius: 1em;
+    box-shadow:  0 0 30px black;
+    background-color: $dark-background;
+    width: 50vw;
+    height: 96vh;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+	left: 0;
+    right: 0;
+    margin: auto;
+    justify-content: center;
+
+
+    .header {
+        text-align: center;
+        height: 8vh;
+        width: 100%;
+
+        h3 {
+            margin:0.8em 0.2em 0.2em 0.2em;
+        }
+        
+        button {
+            height: 4.5vh;
+            width: 2.3vw;
+            font-size: 1.2em;
+            border-radius: 0px !important;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+    .post-content {
+        
+        border: solid 1px $my-yellow;
+        border-radius: 1em;
+        height: fit-content;
+        padding: 1em 0.5em 1em 0.5em;
+        margin: 1em;
+    }
+    .feed-box {
+        height:64.5vh;
+        border-top: $border-color solid 1px;
+        overflow-y: auto;
+        overflow-anchor: none;
+        // border: $test;
+
+        .anchor {
+            height: 4em;
+           
+            }
+        .response {
+            margin: 0.8em;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            // border: $test;
+            img {
+                margin: 0.3em 1em 0 0;
+                width: 3vw;
+                height: 6vh;
+                border-radius: 50%;
+                border: 2px solid $my-yellow;
+            }
+
+            p {
+                border: solid 0.5px $my-yellow;
+                border-radius: 1.2em;
+                padding: 1em;
+                margin: 0;
+            }
+        }
+        .my-response {
+            flex-direction: row-reverse;
+            img {
+                margin: 0.3em 0 0 1em;
+            }
+
+            p {
+                background-color: $my-yellow;
+                color: $dark-background;
+            }
+        }
+
+        .creator-response {
+            img {
+                border-color:white !important;
+            }
+
+            p {
+                background-color: white;
+            color: $dark-background;
+            border-color: white !important;
+            }
+        }
+        
+    }
+    .add-comment {
+        // border: $test;
+        position: absolute;
+        bottom: 0;    
+        margin: 0 auto; 
+        max-width: 100%;
+        width: 100vw;
+        height:5vh;
+        
+        .comment-form {
+
+            width: 100%;
+            height:5vh;
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+            border: none;
+            input {
+                // width: 80%;
+                flex-grow: 5;
+                height: 100%;
+                margin: 0;
+                box-sizing: border-box ;
+    
+            }
+            button {
+                // width:18%;
+                flex-grow: 1;
+                box-sizing: border-box !important;
+                height: 100%;
+                border-radius: 0px !important;
+                margin: 0;
+    
+            }
+        }
+        
+    }
 }

@@ -10,7 +10,7 @@ router.get("/post", (req, res) => {
 })
 
 router.get("/recherche/:caracteres", (req, res) => {
-    connection.query(`SELECT post.id, post.content, post.date, post.user_id, user.nom, user.prenom, user.image, (SELECT COUNT(*) FROM favoris WHERE favoris.post_id = post.id) AS TotalFavoris, (SELECT COUNT(*) FROM commentaires WHERE commentaires.post_id = post.id) AS TotalComment FROM post INNER JOIN user ON post.user_id = user.id WHERE post.content LIKE '%${req.params.caracteres}%'  ORDER BY post.id DESC`, (err, result) => {
+    connection.query(`SELECT post.id, post.content, post.date, post.user_id, user.nom, user.prenom, user.image, (SELECT COUNT(*) FROM favoris WHERE favoris.post_id = post.id) AS TotalFavoris, (SELECT COUNT(*) FROM commentaires WHERE commentaires.post_id = post.id) AS TotalComment FROM post INNER JOIN user ON post.user_id = user.id WHERE post.content LIKE '%${req.params.caracteres}%' OR user.prenom LIKE '%${req.params.caracteres}%' OR user.nom LIKE '%${req.params.caracteres}%' ORDER BY post.id DESC`, (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })
@@ -37,8 +37,6 @@ router.get("/feed/:userID", (req, res) => {
     connection.query(`SELECT post.id, post.content, post.date, post.user_id, user.nom, user.prenom, user.image, (SELECT COUNT(*) FROM favoris WHERE favoris.post_id = post.id) AS TotalFavoris, (SELECT COUNT(*) FROM commentaires WHERE commentaires.post_id = post.id) AS TotalComment FROM post INNER JOIN user ON post.user_id = user.id INNER JOIN abonnement ON post.user_id = abonnement.compte_abonnement_id WHERE abonnement.user_id = ${user_id} AND post.reponse_id IS NULL ORDER BY post.id DESC`, (err, result) => {
         if (err) throw err
         let postes = result
-        console.log(result)
-
         res.status(200).send(postes)
 
     })

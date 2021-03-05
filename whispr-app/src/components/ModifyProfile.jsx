@@ -125,7 +125,7 @@ class ModifyProfile extends Component {
 
     render() {
         return (
-            <div className="pop-up">
+            <div className="modify-pop-up">
                 <div className="pop-header">
                 <button className="empty-btn" onClick={() => this.close()}>X</button>
                 <h3>Modifier le profil</h3>
@@ -141,10 +141,10 @@ class ModifyProfile extends Component {
                     <textarea  maxLength="100" name="description" id="description" defaultValue={this.state.description.content}onChange={this.handleChange} />
                     <input type="text" name="lieu" id="lieu" defaultValue={this.state.lieu.content}  onChange={this.handleChange} />
                     <p className={this.state.lieu.valid ? 'valid-input' : 'not-valid-input'}>{this.state.lieu.msg}</p>
-
+                    <div className="btn-div">
                     <button type="submit" className="full-btn">Valider</button>
                     <button type="reset" className="full-btn">Annuler</button>
-
+                    </div>
                 </form>
 
             </div>

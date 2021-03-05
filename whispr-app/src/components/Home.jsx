@@ -16,7 +16,7 @@ const Home = (props) => {
     
 
     return (
-        <div>
+        <div className="body-content">
             {isLogged ? <Dashboard displayUserData = {userData} />:
             <div>
                 <h1>Bienvenue sur Whispr !</h1>

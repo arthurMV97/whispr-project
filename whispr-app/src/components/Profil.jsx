@@ -94,7 +94,7 @@ const Profil =  (props) => {
     }
 
     return (
-        <div className="profil-page">
+        <div className="profil-page body-content">
             <div className="profil">
                 <div className="user">
                     <img src={displayUserData.image} alt={"profile-user" + displayUserData.id}/>
@@ -106,9 +106,10 @@ const Profil =  (props) => {
             
             <p>{displayUserData.description}</p>
             <p>Lieu: {displayUserData.lieu}</p>
-            <div className="abonnement-infos"></div>
+            <div className="abonnement-infos">
             <button onClick={() => displayPopUp(true, true)}>Abonnements: {id === userId ? followingData.nbAbonnements : displayUserData.nbAbonnements}</button>
             <button onClick={() => displayPopUp(true, false)}>Abonnés: {id === userId ? followingData.nbAbonnes : displayUserData.nbAbonnes}</button>
+            </div>
             </div>
             {popUpBool.display && <PopUpAbonnements bool={popUpBool.abonnements} closePopUp={displayPopUp} /> }
             {modifPopUpBool && <ModifyProfile  modifyData={updateUserData} userData = {displayUserData} closeModif={displayModif} /> }

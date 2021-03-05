@@ -85,7 +85,6 @@ function App() {
         <MobileHeader />
         <MobileNav />
       </MobileView>
-
           <Switch>
           <Route exact path="/">
             <Home displayUserData = {userData} />

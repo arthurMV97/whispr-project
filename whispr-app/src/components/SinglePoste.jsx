@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import { connect } from 'react-redux';
 import { likePost } from '../store/actions/favoris'
 import { unlikePost } from '../store/actions/favoris'
-
+import dayjs from 'dayjs'
 import axios from 'axios';
 import { io } from 'socket.io-client';
 let socket = io('localhost:8080')
@@ -155,8 +155,8 @@ class SinglePoste extends Component {
                     </div>
                     
                     <div className="content">
-                    <p>{this.state.data.content}</p>
-                    <p>{this.state.data.date}</p>
+                    <p className="text-content">{this.state.data.content}</p>
+                    <p className="date">posté le {dayjs(this.state.data.date).format("DD/MM/YY")}</p>
                     </div>
                 </div>
                     <div className="interactions">

@@ -158,7 +158,7 @@ class Inscription extends Component {
 
     render() {
         return (
-            <div >
+            <div className="body-content" >
              <h1>Inscription</h1>
              <div className="connexion-forms">
             <form onSubmit={this.handleSubmit} >

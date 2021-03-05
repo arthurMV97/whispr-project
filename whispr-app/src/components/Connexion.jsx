@@ -56,7 +56,7 @@ class Connexion extends Component {
 
     render() {
         return (
-            <div>
+            <div className="body-content">
                 <h1>Se connecter</h1>
                 <div className="connexion-forms">
             <form onSubmit={this.handleSubmit}>

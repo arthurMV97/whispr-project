@@ -100,7 +100,6 @@ io.on('connection', socket => {
             }
         }
         console.log('User Connected');
-        console.log(connectedUsers)
     })
 
     socket.on('posteData', (data) => {
@@ -131,10 +130,8 @@ io.on('connection', socket => {
             else {
                 connection.query(`SELECT abonnement.user_id FROM abonnement WHERE abonnement.compte_abonnement_id = ${data.user_id}`, (err, result) => {
                     if (err) throw err
-                    console.log('155', result)
                     connectedUsers.forEach(e => {
                         if (result.find(elem => e.user === elem.user_id)) { //SI l'id de la db est egal a un des id du tableau connected user
-                            console.log(e.user, e.socket)
                             io.to(e.socket).emit('new-post',sendToFront)
                         }
                     
@@ -154,7 +151,6 @@ io.on('connection', socket => {
     })
 
     socket.on('like-post', (data) => {
-        console.log(data)
         const favorisData = {
             user_id: data.userId, 
             post_id: data.postId,

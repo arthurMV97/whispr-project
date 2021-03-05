@@ -58,13 +58,15 @@ const Decouvrir = (props) => {
         console.log(feedState)
     }
     return (
-        <div>
+        <div className="body-content decouvrir">
+            <div className="user-display">
             {usersState.map(e => e.id !== userId && <ProfileResume displayUserData = {e} key={`user-${e.id}-${e.nom}`}/> )}
+            </div>
             
             <div className="feed">
             <form onSubmit={handleSubmit}>
-                        <textarea placeholder="Rechercher un post..." name="recherche" onChange={handleChange} ></textarea>
-                        <button className="full-btn">Rechercher</button>
+                        <input className="search-input" type="text" placeholder="Rechercher quelque chose..." name="recherche" onChange={handleChange} ></input>
+                        <button className="full-btn search"></button>
             </form>
             {feedState.map((element, index) => {
                 if (props.user) {

@@ -702,3 +702,113 @@ h1 {
         
     }
 }
+
+//---------------Mobile-view
+
+
+@media (max-width: 480px) {
+    body {
+        padding: 4.2em 0;
+    }
+    .feed {
+        form {
+            margin: 0.5em;
+        }
+    }
+    .mobile-header {
+        border: $test;
+        background-color: $dark-background;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5vh;
+        width: 100vw;
+        header {
+            
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .sign-out {
+                border: none;
+                width: 8vw;
+                height: 5vh;
+                margin:  0.5em 2em;
+                background-color: inherit;
+                background-position: center;
+                background-repeat: no-repeat;
+                cursor: pointer;
+                align-self: flex-start;
+                background-image: url("./files/white-off.png");
+                background-size: 84% ;
+                &:hover {
+                    background-image: url("./files/yellow-off.png");
+                }
+            }
+            #logo {
+                width: 10vw;
+                height: 5vh;
+                margin:  0.5em 2em;
+        
+        
+                img {
+                    width: 25vw;
+                    height: 5vh;
+                    object-fit: contain;
+                }
+            }
+    
+        }
+    }
+    
+    
+    .mobile-nav {
+        border-top: $border-color solid 1px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0.5em;
+        background-color: $dark-background;
+    
+        nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        
+            a {
+                height: 100%;
+            }
+            .home-icon {
+               
+                margin-top: 0.3em;
+                width: 3em;
+                height: 3em;
+                background-image: url("./files/yellow-home.png");
+                background-size: 84% ;
+                background-position: center;
+                background-repeat: no-repeat;
+    
+            }
+            .search-icon {
+                
+                margin-top: 0.3em;
+                width: 3em;
+                height: 3em;
+                background-image: url("./files/yellow-search.png");
+                background-size: 84% ;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .profile-image {
+                border: $test;
+                margin-top: 0.3em;
+                width: 3em;
+                height: 3em;
+                border-radius: 50vw;
+                border: 2px solid $my-yellow;
+                    
+            }
+        }
+    }
+}

@@ -37,7 +37,7 @@ const Commentaires = (props) => {
         
 
         let bool = Object.keys(props.newComment).length > 0;
-        console.log(bool);
+        
         if (bool) {
             let rdm = Math.random()
             let newComment = props.newComment

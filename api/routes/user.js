@@ -10,6 +10,12 @@ router.get("/user", (req, res) => {
     })
 })
 
+router.get("/random", (req, res) => {
+    connection.query("SELECT id, prenom, nom, lieu, image, description FROM user ORDER BY RAND() limit 7", (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
 router.put('/user/:id', (req, res) => {
     const id = req.params.id
     const newData = {

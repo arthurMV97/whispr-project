@@ -43,6 +43,7 @@ router.post("/sign-in", (req, res) => {
             res.status(401).send('Email invalide')
         }
         else {
+            console.log(config);
             let token = jwt.sign({email: result[0].email, id: result[0].id, image: result[0].image, nom: result[0].nom, prenom: result[0].prenom},  config.secret)
             let hashed = result[0].password
             bcrypt.compare(userConnect.password, hashed, (err, result) => {
@@ -75,7 +76,7 @@ router.post('/admin-sign-in', (req, res) => {
             res.status(401).send('Identifiant invalide')
         }
         else {
-            let token = jwt.sign({identifiant: result[0].identifiant, id: result[0].id, statut: result[0].statut, nom: result[0].nom, prenom: result[0].prenom }, config.secret)
+            let token = jwt.sign({identifiant: result[0].identifiant, id: result[0].id, statut: result[0].statut, nom: result[0].nom, prenom: result[0].prenom }, config.admin-secret)
             let hashed = result[0].password
             bcrypt.compare(adminConnect.password, hashed, (err, result) => {
                 if (result) {

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { BrowserView } from "react-device-detect";
+import {Link} from 'react-router-dom'
+
 
 
 const ProfileResume = (props) => {
@@ -8,6 +11,7 @@ const ProfileResume = (props) => {
 
     const [userData, setUserData] = useState(props.displayUserData)
     const followingData = useSelector(state => state.abonnementStore)
+    const userId = useSelector(state => state.userStore.id)
 
 
     if (props.displayUserData !== userData) {  //peut etre inutil ? A voir si fonctionne sans
@@ -17,22 +21,27 @@ const ProfileResume = (props) => {
 
 
     return (
+        <BrowserView>
         <div className="profil-infos">
             <div className="user">
-                <img src={userData.image} alt={"profile-user" + userData.id}/>
-                <p>{userData.prenom + ' ' + userData.nom}</p>
+                <Link to={`/profil/${userData.id}`}><img src={userData.image} alt={"profile-user" + userData.id}/></Link>
+                <Link to={`/profil/${userData.id}`}><p>{userData.prenom + ' ' + userData.nom}</p></Link>
             </div>
             <div className="user-infos">
                 <p>{userData.description}</p>
                 <p>Lieu: {userData.lieu}</p>
             </div>
+            {userData.id === userId && 
             <div className="abonnement-infos">
-                <p>Abonnements: {followingData.nbAbonnements}</p>
-                <p>Abonnés: {followingData.nbAbonnes}</p>
+            <p>Abonnements: {followingData.nbAbonnements}</p>
+            <p>Abonnés: {followingData.nbAbonnes}</p>
             </div>
+            }
+            
             
 
         </div>
+        </BrowserView>
     );
 };
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import SinglePost from './SinglePoste'
 import ProfileResume from './ProfileResume'
+
 let socket
 
 // const [userData, setUserData] = useState({})

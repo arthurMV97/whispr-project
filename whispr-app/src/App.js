@@ -1,3 +1,5 @@
+import MobileHeader from "./components/MobileHeader"
+import MobileNav from "./components/MobileNav"
 import Header from "./components/Header"
 import Decouvrir from "./components/Decouvrir"
 import Home from "./components/Home"
@@ -6,9 +8,12 @@ import Inscription from "./components/Inscription";
 import Profil from "./components/Profil";
 import HomeAdmin from "./components/HomeAdmin";
 import AdminDashboard from "./components/AdminDashboard";
+
+import {Helmet} from "react-helmet";
 import axios from 'axios';
 import React, {useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { BrowserView, MobileView } from "react-device-detect";
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,6 +27,7 @@ function App() {
   const isUserLogged = useSelector(state => state.userStore.isLogged)
   const isAdmin = useSelector(state => state.adminStore.isLogged)
   const [userData, setUserData] = useState({})
+
   const dispatch = useDispatch()
 
   const updateData = (data)  => {
@@ -48,6 +54,14 @@ function App() {
         dispatch({type: 'CONNECT', ...newData})
 
       })
+      axios.get(`http://localhost:8080/favoris/${userId}`)
+        .then(response => {
+          console.log('favvv', response.data);
+          let favorisIds = []
+          response.data.forEach(e => favorisIds.push(e.id))
+          console.log(favorisIds);
+            dispatch({type: 'CONNECTION', favorisIds: favorisIds})
+        })
     }
     console.log('App', userData);
 
@@ -57,8 +71,21 @@ function App() {
   
   return (
     <Router>
+      <Helmet>
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>Whispr</title>
+
+      </Helmet>
+
+      <BrowserView>
           <Header />
-          
+      </BrowserView>
+
+      <MobileView>
+        <MobileHeader />
+        <MobileNav />
+      </MobileView>
+
           <Switch>
           <Route exact path="/">
             <Home displayUserData = {userData} />

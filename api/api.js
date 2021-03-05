@@ -68,33 +68,10 @@ app.post("/post", (req, res) => { //Manque prise en compte des images
 
 
 
-app.post("/favoris/:id", (req, res) => {
-    const favorisData = {
-        user_id: req.body.user_id, //Plus tard dans token
-        post_id: req.params.id,
-        date: new Date()
-    }
 
-    connection.query("INSERT INTO favoris SET ?", favorisData, (err, result) => {
-        if (err) throw err
-        if(result.length < 1) {
-        res.status(400).send("Le post n'existe pas ou plus")
-        }
-        else {
-            res.status(200).send("Le post a bien été ajouté à vos favoris")
-        }
-    })
-
-})
 
 app.delete("/favoris/:id", (req, res) => {
-    const idPostToUnlike = req.params.id
-    const user_id = req.body.user_id //Plus tard dans token
-
-    connection.query(`DELETE FROM favoris WHERE post_id = ${idPostToUnlike} AND user_id = ${user_id}` , (err, result) => {
-        if (err) throw err 
-        res.status(200).send(`Le post numéro ${idPostToUnlike} a bien été supprimé des favoris`)
-    })
+    
 })
 
 
@@ -145,8 +122,8 @@ io.on('connection', socket => {
             date: new Date(),
 
         }
-        console.log(sendToFront)
-        connection.query("INSERT INTO post SET ?", posteToDB, (err, res) => {
+        const query = "INSERT INTO post SET ?"        
+        connection.query(query, posteToDB, (err, res) => {
             if (err) throw err
             if(res.length < 1) {
                 socket.emit('message-console', 'Les données insérées ne sont pas prises en charge')
@@ -169,7 +146,6 @@ io.on('connection', socket => {
     })
     socket.on('rooming', (data) => {
         socket.join(`room-${data.user}-${data.id}`)
-        console.log(`joining: room-${data.user}-${data.id}`);
     })
 
     socket.on('leave-room', (data) => {
@@ -179,15 +155,55 @@ io.on('connection', socket => {
 
     socket.on('like-post', (data) => {
         console.log(data)
-        io.in(`room-${data.postUser}-${data.postId}`).emit('liked-post', data)
+        const favorisData = {
+            user_id: data.userId, 
+            post_id: data.postId,
+            date: new Date()
+        }
+        const query = "INSERT INTO favoris SET ?"
+
+        connection.query(query, favorisData, (err, result) => {
+            if (err) throw err
+            if(result.length < 1) {
+            socket.emit('message-console', "le post n'existe pas ou plus")
+            }
+            else {
+                io.in(`room-${data.postUser}-${data.postId}`).emit('liked-post', data)
+            }
+        })
     })
     socket.on('unlike-post', (data) => {
-        io.in(`room-${data.postUser}-${data.postId}`).emit('unliked-post', data)
+        console.log(data);
+        const post_id = data.postId
+        const user_id = data.userId
+        
+        const query = "DELETE FROM favoris WHERE post_id = ? AND user_id = ?"
+
+    connection.query(query, [post_id, user_id], (err, result) => {
+        if (err) throw err 
+        io.in(`room-${data.postUser}-${data.postId}`).emit('unliked-post', data)    })
+      
     })
 
     socket.on('new-comment', data => {
-        console.log(data);
-        io.in(data.room).emit('add-new-comment', data)
+        
+        const commentToDB = {
+            post_id: data.post_id,
+            content: data.content,
+            user_id: data.user_id,
+            image: data.image,
+            date: new Date()}
+
+        const query = "INSERT INTO commentaires SET ?"        
+        
+        connection.query(query, commentToDB, (err, res) => {
+            if (err) throw err
+            if(res.length < 1) {
+                socket.emit('message-console', 'Commentaire non pris en charge')
+            } else {
+                io.in(data.room).emit('add-new-comment', data)
+            }
+        })
     })
 })
 

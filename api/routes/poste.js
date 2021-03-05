@@ -9,6 +9,27 @@ router.get("/post", (req, res) => {
     })
 })
 
+router.get("/recherche/:caracteres", (req, res) => {
+    connection.query(`SELECT post.id, post.content, post.date, post.user_id, user.nom, user.prenom, user.image, (SELECT COUNT(*) FROM favoris WHERE favoris.post_id = post.id) AS TotalFavoris, (SELECT COUNT(*) FROM commentaires WHERE commentaires.post_id = post.id) AS TotalComment FROM post INNER JOIN user ON post.user_id = user.id WHERE post.content LIKE '%${req.params.caracteres}%'  ORDER BY post.id DESC`, (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+
+router.get("/engagement", (req, res) => {
+    connection.query("SELECT post.id, post.content, post.date, post.user_id, user.nom, user.prenom, user.image, (SELECT COUNT(*) FROM favoris WHERE favoris.post_id = post.id) AS TotalFavoris, (SELECT COUNT(*) FROM commentaires WHERE commentaires.post_id = post.id) AS TotalComment FROM post INNER JOIN user ON post.user_id = user.id ORDER BY TotalComment DESC limit 10", (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+
+router.get("/post-admin", (req, res) => {
+    connection.query("SELECT post.id, post.content, post.date, post.user_id, user.nom, user.prenom, user.image, (SELECT COUNT(*) FROM favoris WHERE favoris.post_id = post.id) AS TotalFavoris, (SELECT COUNT(*) FROM commentaires WHERE commentaires.post_id = post.id) AS TotalComment FROM post INNER JOIN user ON post.user_id = user.id ORDER BY `post`.`id` DESC", (err, result) => {
+        if (err) throw err
+        res.status(200).send(result)
+    })
+})
+
 
 router.get("/feed/:userID", (req, res) => {
     const user_id = req.params.userID 
@@ -53,7 +74,8 @@ router.delete("/post/:id", (req, res) => {
 
 router.get("/comments/:id", (req, res) => {
     const commentId = req.params.id
-    connection.query(`SELECT * FROM commentaires WHERE commentaires.post_id = ${commentId}`, (err, result) => {
+    const query = 'SELECT * FROM commentaires WHERE commentaires.post_id = ? ORDER BY commentaires.id ASC'
+    connection.query(query, commentId, (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Commentaires from './Commentaires';
-
 import {Link} from 'react-router-dom'
 import { connect } from 'react-redux';
+import { likePost } from '../store/actions/favoris'
+import { unlikePost } from '../store/actions/favoris'
+
 import axios from 'axios';
 import { io } from 'socket.io-client';
 let socket = io('localhost:8080')
@@ -18,7 +20,10 @@ class SinglePoste extends Component {
             data: {},
             isLiked: false,
             commentPopUp: false,
-            newComment: {}
+            newComment: {},
+            totalComment: null,
+            totalLikes: null,
+
 
         }
     }
@@ -40,26 +45,40 @@ class SinglePoste extends Component {
     }
 
     if (this._isMounted) {
-        this.setState({data: this.props.dataFromParent})
-        // axios.get()
-        
+        this.setState({data: this.props.dataFromParent, totalComment: this.props.dataFromParent.TotalComment, totalLikes: this.props.dataFromParent.TotalFavoris })
+
+        if (this.props.favorisIds.includes(this.state.data.id)) {
+            this.setState({isLiked: true})
+        }
+       
         socket.emit('rooming', data )
 
         socket.on('liked-post', (data) => {
-            console.log('data back', data);
             if (this.state.data.id === data.postId) {
-                this.setState({isLiked: true})
+                const totalPlusOne = this.state.totalLikes + 1
+                this.setState({totalLikes: totalPlusOne})
+                this.props.likePost(data.postId)
+
+
             }
+
         })
         socket.on('unliked-post', (data) => {
-            console.log('data back', data);
             if (this.state.data.id === data.postId) {
-                this.setState({isLiked: false})
+                const totalPlusOne = this.state.totalLikes - 1
+            this.setState({totalLikes: totalPlusOne})
+            this.props.unlikePost(data.postId)
             }
+
+            
+
         }) 
         socket.on('add-new-comment', data => {
-            // console.log(data, );
             this.setState({newComment: data})
+            if (this.state.data.id === data.post_id) {
+                const totalPlusOne = this.state.totalComment + 1
+            this.setState({totalComment: totalPlusOne})
+            }
         })
 
         
@@ -91,14 +110,13 @@ class SinglePoste extends Component {
         })
 
     }
-
     likePost = () => {
         const data = {
             postId: this.state.data.id,
             postUser: this.state.data.prenom,
             userId: this.props.userId
         }
-        
+        this.setState({isLiked: true})
         socket.emit('like-post', data)
     }
 
@@ -108,6 +126,7 @@ class SinglePoste extends Component {
             postUser: this.state.data.prenom,
             userId: this.props.userId
         }
+        this.setState({isLiked: false})
         socket.emit('unlike-post', data)
     }
 
@@ -124,9 +143,11 @@ class SinglePoste extends Component {
             <div>
 
                 {this.state.commentPopUp &&   <Commentaires data = {this.state.data} newComment = {this.state.newComment} closeCommentPopUp = {this.closeCommentPopUp}/> }
-                <div className="poste" >
 
-                
+
+
+
+                <div className="poste" >
                 <div>
                     <div className="user">                       
                             <Link to={`/profil/${this.state.data.user_id}`}><img src={this.state.data.image} alt={"profile-user" + this.state.data.user_id}/></Link>
@@ -142,12 +163,12 @@ class SinglePoste extends Component {
                                    
                                     <div className="img-bloc">
                                         {this.state.isLiked ? <button className="btn-fav-done" onClick={this.unlikePost}></button> : <button className="btn-fav" onClick={this.likePost}></button>}
-                                        <p>{this.state.data.TotalFavoris}</p>
+                                        <p>{this.state.totalLikes}</p>
                                     </div>
                                    
                                     <div className="img-bloc">
                                         <button className="btn-com" onClick={this.openCommentPopUp}></button>
-                                        <p>{this.state.data.TotalComment}</p>
+                                        <p>{this.state.totalComment}</p>
                                     </div>
 
                                    <div className="img-bloc">
@@ -165,11 +186,15 @@ class SinglePoste extends Component {
 function mapStateToProps(state) { //Accéder aux données de notre store dans les props
     return {
       userId: state.userStore.id,
-      isAdmin: state.adminStore.isLogged
-      // products: state.products.products
+      isAdmin: state.adminStore.isLogged,
+      favorisIds: state.favorisStore.favorisIds
     };
   }
 
+  const mapDispatchToProps = { 
+    likePost, unlikePost                
+  }
+
   export default connect(
-    mapStateToProps
+    mapStateToProps, mapDispatchToProps
   )(SinglePoste);

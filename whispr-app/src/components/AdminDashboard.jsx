@@ -7,6 +7,8 @@ import SinglePost from './SinglePoste'
 
 const AdminDashboard = () => {
     const adminLogged = useSelector(state => state.adminStore.isLogged)
+    const adminToken = useSelector(state => state.adminStore.token)
+
     const [postesState, setPostes] = useState([])
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []); //Permet de forcer l'update
@@ -23,7 +25,11 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         if (adminLogged) {
-            axios.get(`http://localhost:8080/post`)
+            axios.get(`http://localhost:8080/post-admin`, {
+                headers: {
+                    'Authorization': adminToken
+                }
+            })
             .then(res => {
                 setPostes(res.data)
 

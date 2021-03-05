@@ -114,8 +114,8 @@ const Profil =  (props) => {
             {modifPopUpBool && <ModifyProfile  modifyData={updateUserData} userData = {displayUserData} closeModif={displayModif} /> }
 
             <ul className="nav-list">
-                    <li><button onClick={() => changeComponent(true)} className={boolState ? "clicked" : null}>Mes Postes</button></li>
-                    <li><button onClick={() => changeComponent(false)} className={!boolState ? "clicked" : null}>Mes Favoris</button></li>
+                    <li><button onClick={() => changeComponent(true)} className={boolState ? "clicked" : null}>Postes</button></li>
+                    <li><button onClick={() => changeComponent(false)} className={!boolState ? "clicked" : null}>Favoris</button></li>
                 </ul>
             <div className="profil-feed">
                 {boolState ? <MesPostes postes = {postesState} user = {displayUserData} /> : <MesFavoris favoris = {favorisState}/>}

@@ -1,3 +1,5 @@
+let pass = require('../personalData.json')
 module.exports = {
-    'secret': 'voicilesecretดวงจันทร์Плутонمرحبا'
+    'secret': pass.USER_SECRET_CODE,
+    'admin-secret': pass.ADMIN_SECRET_CODE
 }

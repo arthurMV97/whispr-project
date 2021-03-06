@@ -8,6 +8,8 @@ import SinglePost from './SinglePoste'
 const Decouvrir = (props) => {
 
     const userId = useSelector(state => state.userStore.id)
+    const userToken = useSelector(state => state.userStore.token)
+
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []); //Permet de forcer l'update
     const [feedState, setFeed] = useState([])
@@ -20,13 +22,21 @@ const Decouvrir = (props) => {
         let isMounted = true
         if (isMounted) {
             if (feedState.length === 0) {
-                axios.get(`http://localhost:8080/engagement`)
+                axios.get(`http://localhost:8080/engagement`, {
+                    headers: {
+                        'Authorization': userToken
+                    }
+                })
                 .then(res => {
                     setFeed(res.data)
                 })
             }
             if (usersState.length === 0) {
-                axios.get('http://localhost:8080/random')
+                axios.get('http://localhost:8080/random', {
+                    headers: {
+                        'Authorization': userToken
+                    }
+                })
                 .then(res => {
                     setUser(res.data)
                 })
@@ -38,7 +48,11 @@ const Decouvrir = (props) => {
     })
     const handleSubmit = event => {
         event.preventDefault()
-        axios.get(`http://localhost:8080/recherche/${rechercheState}`)
+        axios.get(`http://localhost:8080/recherche/${rechercheState}`, {
+            headers: {
+                'Authorization': userToken
+            }
+        })
         .then(res => {
             console.log(res.data);
             setFeed(res.data)

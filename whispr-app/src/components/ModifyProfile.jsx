@@ -104,7 +104,11 @@ class ModifyProfile extends Component {
             image: this.state.image.content,
                     }
                     
-        axios.put(`http://localhost:8080/user/${this.props.userId}`, user)
+        axios.put(`http://localhost:8080/user/${this.props.userId}`, user, {
+            headers: {
+                'Authorization': this.props.userToken
+            }
+        })
         .then(res => {
             console.log(res.data)
             this.close()
@@ -154,7 +158,8 @@ class ModifyProfile extends Component {
 
 function mapStateToProps(state) { //Accéder aux données de notre store dans les props
     return {
-      userId: state.userStore.id
+      userId: state.userStore.id,
+      userToken: state.userStore.token
       // products: state.products.products
     };
   }

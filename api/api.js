@@ -16,14 +16,9 @@ const io = require('socket.io')(server, {
     }
 })
 
-
-
-
-
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 app.use(cors());
-
 
 
 app.use((req, res, next) => {
@@ -37,45 +32,6 @@ app.use(connexionRoutes)
 app.use(userRoutes)
 app.use(abonnementRoutes)
 app.use(posteRoutes)
-
-
-
-
-
-
-//------ ROUTES PUBLICATIONS -------
-
-
-
-app.post("/post", (req, res) => { //Manque prise en compte des images
-    const postInfo = {
-        user_id: req.body.user_id, //Plus tard dans token
-        reponse_id: req.body.reponse_id,
-        date: new Date(),
-        content: req.body.content,
-    }
-
-    
-})
-
-
-
-
-
-
-
-//------ ROUTES FAVORIS -------
-
-
-
-
-
-app.delete("/favoris/:id", (req, res) => {
-    
-})
-
-
-
 
 
 //----------- SOCKETS  ----------
@@ -128,7 +84,9 @@ io.on('connection', socket => {
                 socket.emit('message-console', 'Les données insérées ne sont pas prises en charge')
             }
             else {
-                connection.query(`SELECT abonnement.user_id FROM abonnement WHERE abonnement.compte_abonnement_id = ${data.user_id}`, (err, result) => {
+                const query ="SELECT abonnement.user_id FROM abonnement WHERE abonnement.compte_abonnement_id = ?"
+                const userId = data.user_id
+                connection.query(query, userId, (err, result) => {
                     if (err) throw err
                     connectedUsers.forEach(e => {
                         if (result.find(elem => e.user === elem.user_id)) { //SI l'id de la db est egal a un des id du tableau connected user

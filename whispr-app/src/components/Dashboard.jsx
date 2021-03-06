@@ -71,7 +71,11 @@ class Dashboard extends Component {
 
 
     componentDidMount() {
-        axios.get(`http://localhost:8080/feed/${this.props.userData.id}` )
+        axios.get(`http://localhost:8080/feed/${this.props.userData.id}`, {
+            headers: {
+                'Authorization': this.props.userData.token
+            }
+        } )
         .then(res => {
             this.setState({postes: res.data})
         })
@@ -136,7 +140,7 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) { 
     return {
-      userData: state.userStore
+      userData: state.userStore,
     };
   }
 

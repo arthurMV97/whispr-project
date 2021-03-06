@@ -25,13 +25,20 @@ const Profil =  (props) => {
     const history = useHistory();
     const userId = useSelector(state => state.userStore.id)
     const isAdmin = useSelector(state => state.adminStore.isLogged)
+    const adminToken = useSelector(state => state.adminStore.token)
+    const userToken = useSelector(state => state.userStore.token)
+
     const followingData = useSelector(state => state.abonnementStore)
     let userSuivi =  followingData.abonnements && (followingData.abonnements.find(  e =>  e === id) || false) //Problème rencontré: au render props => undefined donc on fait une condition
     
     useEffect(() => {
         if (id) {
             setBool(true)
-            axios.get(`http://localhost:8080/profile/${id}`)
+            axios.get(`http://localhost:8080/profile/${id}`, {
+                headers: {
+                    'Authorization': userToken
+                }
+            })
             .then(res => {
                 let newData = res.data
                 const splitted = {
@@ -45,12 +52,20 @@ const Profil =  (props) => {
                 setUserData(newData)
       })
 
-            axios.get(`http://localhost:8080/post/${id}`)
+            axios.get(`http://localhost:8080/post/${id}`, {
+                headers: {
+                    'Authorization': userToken
+                }
+            })
             .then(res => {
                 setPostes(res.data.reverse())
             })
 
-            axios.get(`http://localhost:8080/favoris/${id}`)
+            axios.get(`http://localhost:8080/favoris/${id}`, {
+                headers: {
+                    'Authorization': userToken
+                }
+            })
         .then(response => {
             setFavoris(response.data.reverse())
         })
@@ -77,7 +92,10 @@ const Profil =  (props) => {
     } 
 
     const deleteUser = (id) => {
-        axios.delete(`http://localhost:8080/user/${id}`)
+        axios.delete(`http://localhost:8080/delete-user/${id}`, {
+            headers: {
+            'Authorization': adminToken
+        }})
         .then(res => {
             console.log(res.data)
         })

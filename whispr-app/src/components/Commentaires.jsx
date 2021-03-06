@@ -8,6 +8,7 @@ let socket = io('localhost:8080')
 const Commentaires = (props) => {
 
     const userId = useSelector(state => state.userStore.id)
+    const userToken = useSelector(state => state.userStore.token)
     const userImage = useSelector(state => state.userStore.image)
     const userPrenom = useSelector(state => state.userStore.prenom)
     const userNom = useSelector(state => state.userStore.nom)
@@ -28,7 +29,11 @@ const Commentaires = (props) => {
 
     useEffect(() => {
         if (!isMounted) {
-            axios.get(`http://localhost:8080/comments/${props.data.id}`)
+            axios.get(`http://localhost:8080/comments/${props.data.id}`, {
+                headers: {
+                    'Authorization': userToken
+                }
+            })
             .then(res => {
                 setCommentsArray(res.data)
                 setIsMounted(true)

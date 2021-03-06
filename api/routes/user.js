@@ -4,14 +4,16 @@ const connection = require("../db")
 
 
 router.get("/user", (req, res) => {
-    connection.query("SELECT id, prenom, nom, email FROM user", (err, result) => {
+    const query = "SELECT id, prenom, nom, email FROM user"
+    connection.query(query, (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })
 })
 
 router.get("/random", (req, res) => {
-    connection.query("SELECT id, prenom, nom, lieu, image, description FROM user ORDER BY RAND() limit 7", (err, result) => {
+    const query = "SELECT id, prenom, nom, lieu, image, description FROM user ORDER BY RAND() limit 7"
+    connection.query(query, (err, result) => {
         if (err) throw err
         res.status(200).send(result)
     })
@@ -25,7 +27,8 @@ router.put('/user/:id', (req, res) => {
         description: req.body.description,
         lieu: req.body.lieu
     }
-    connection.query(`UPDATE user SET ? WHERE id = ${id}`, newData, (err, result) => {
+    const query = "UPDATE user SET ? WHERE id = ?"
+    connection.query(query, [newData, id], (err, result) => {
         if (err) throw err;
     
         if (result.length < 1) {
@@ -38,10 +41,11 @@ router.put('/user/:id', (req, res) => {
     })
 })
 
-router.delete("/user/:id", (req, res) => {
+router.delete("/delete-user/:id", (req, res) => {
 
     const id = req.params.id;
-    connection.query(`DELETE abonnement, user FROM abonnement INNER JOIN user ON user.id = ${id} WHERE abonnement.user_id = ${id} OR abonnement.compte_abonnement_id = ${id}`, (err, result) => {
+    const query = "DELETE abonnement, user FROM abonnement INNER JOIN user ON user.id = ? WHERE abonnement.user_id = ? OR abonnement.compte_abonnement_id = ?"
+    connection.query(query, [id, id, id], (err, result) => {
         if (err) throw err 
         res.status(200).send(`L'utilisateur numéro ${id} a bien été supprimé`)
     })
@@ -51,8 +55,8 @@ router.delete("/user/:id", (req, res) => {
 router.get("/profile/:id", async (req, res) => { // Comprend SES POST et SES INFOS
     const userId = req.params.id
     let profileData
-
-     connection.query(`SELECT id, nom, prenom, image, description, lieu, (SELECT GROUP_CONCAT(abonnement.compte_abonnement_id) FROM abonnement WHERE user_id = ${userId}) AS abonnements, (SELECT GROUP_CONCAT(abonnement.user_id) FROM abonnement WHERE compte_abonnement_id = ${userId}) AS abonnes FROM user WHERE id = ${userId}`, (err, result) => {
+    const query = "SELECT id, nom, prenom, image, description, lieu, (SELECT GROUP_CONCAT(abonnement.compte_abonnement_id) FROM abonnement WHERE user_id = ?) AS abonnements, (SELECT GROUP_CONCAT(abonnement.user_id) FROM abonnement WHERE compte_abonnement_id = ?) AS abonnes FROM user WHERE id = ?"
+     connection.query(query, [userId, userId, userId], (err, result) => {
         if (err) throw err
         profileData = result[0]
 

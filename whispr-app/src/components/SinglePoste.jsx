@@ -102,7 +102,11 @@ class SinglePoste extends Component {
         let index = this.state.data.postIndex
         
             this.props.deleteThePost(index)
-        axios.delete(`http://localhost:8080/post/${this.state.data.id}`)
+        axios.delete(`http://localhost:8080/post/${this.state.data.id}`, {
+            headers: {
+                'Authorization': this.props.userToken
+            }
+        })
         .then(res => {
             console.log(res.data);
             
@@ -186,6 +190,7 @@ class SinglePoste extends Component {
 function mapStateToProps(state) { //Accéder aux données de notre store dans les props
     return {
       userId: state.userStore.id,
+      userToken: state.userStore.token,
       isAdmin: state.adminStore.isLogged,
       favorisIds: state.favorisStore.favorisIds
     };

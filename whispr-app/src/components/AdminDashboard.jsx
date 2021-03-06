@@ -39,7 +39,7 @@ const AdminDashboard = () => {
     }, [adminLogged])
 
     return (
-        <div>
+        <div className="body-content">
             <h1>Admin Dashboard</h1>
             {
                 postesState.map((e, i) => {

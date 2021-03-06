@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../files/WHISPR.png'
 import {Link} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 
 
@@ -11,7 +11,7 @@ const Header = () => {
     const isAdminLogged = useSelector(state => state.adminStore.isLogged )
     const isUserLogged = useSelector(state => state.userStore.isLogged)
     const userId = useSelector(state => state.userStore.id)
-
+    const path = useParams()
     const history = useHistory()
 
     const signOutFct = () => {
@@ -20,8 +20,7 @@ const Header = () => {
     dispatch({ type: 'ADMIN_SIGNOUT' })
     history.push('/')
 }
-
-
+    
     return (
         <div className="header-container">
             <header>

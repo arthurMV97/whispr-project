@@ -49,39 +49,31 @@ textarea {
                 object-fit: contain;
             }
         }
-
         nav {
             display: flex;
             justify-content: space-between;
             width: 100%;
-
             ul {
             display: flex;
             flex-direction: row;
             justify-content: center;
             width: 100%;
             margin: 1em 5em;
-            
             padding: 0;
-            
-
-
-                li {
-                    list-style: none;
-                    margin: 0 2em 0 2em;
-
-
-                    a {
-                        color: white;
-                        text-decoration: none;
-                        &:hover {
-                            color: $my-yellow;
-                            text-decoration: underline;
-                    }}
-                    .on-page {
-                        color: $my-yellow !important;
-                    }
+            li {
+                list-style: none;
+                margin: 0 2em 0 2em;
+                a {
+                    color: white;
+                    text-decoration: none;
+                    &:hover {
+                        color: $my-yellow;
+                        text-decoration: underline;
+                }}
+                .on-page {
+                    color: $my-yellow !important;
                 }
+            }
             }
 
             button {

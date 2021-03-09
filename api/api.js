@@ -80,8 +80,10 @@ io.on('connection', socket => {
         const query = "INSERT INTO post SET ?"        
         connection.query(query, posteToDB, (err, res) => {
             if (err) throw err
+
             if(res.length < 1) {
                 socket.emit('message-console', 'Les données insérées ne sont pas prises en charge')
+
             }
             else {
                 const query ="SELECT abonnement.user_id FROM abonnement WHERE abonnement.compte_abonnement_id = ?"
@@ -130,10 +132,9 @@ io.on('connection', socket => {
         console.log(data);
         const post_id = data.postId
         const user_id = data.userId
-        
         const query = "DELETE FROM favoris WHERE post_id = ? AND user_id = ?"
 
-    connection.query(query, [post_id, user_id], (err, result) => {
+        connection.query(query, [post_id, user_id], (err, result) => {
         if (err) throw err 
         io.in(`room-${data.postUser}-${data.postId}`).emit('unliked-post', data)    })
       

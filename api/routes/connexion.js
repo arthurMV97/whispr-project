@@ -14,8 +14,12 @@ router.post("/sign-up", (req, res) => {
         prenom: req.body.prenom,
         nom: req.body.nom,
         email: req.body.email,
+        lieu: req.body.lieu,
+        description: req.body.description,
+        image: req.body.image,
         password: req.body.password,
         date: new Date(req.body.date),
+
     }
 
     let hash = bcrypt.hashSync(user.password, saltRound)
@@ -23,6 +27,7 @@ router.post("/sign-up", (req, res) => {
   const query = "INSERT INTO user SET ?"
     connection.query(query, user, (err, result) => {
         if (err) throw err
+
         res.send(`${user.prenom} ${user.nom} a été ajouté à la base de données`)
     })
 
@@ -67,7 +72,7 @@ router.post('/admin-sign-in', (req, res) => {
         identifiant: req.body.identifiant,
         password: req.body.password
     }
-    const query = "SELECT * FROM admin WHERE identifiant = ?'"
+    const query = "SELECT * FROM admin WHERE identifiant = ?"
     connection.query(query, adminConnect.identifiant,  (err, result) => {
         if (err) throw err;
         console.log('result1>>>',result)

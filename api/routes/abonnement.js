@@ -22,7 +22,7 @@ router.get("/abonnes/:id", (req, res) => {
 
 router.post("/suivre/:id", (req, res) => {
     const followingData = {
-        user_id: req.body.user_id, //Plus tard dans token
+        user_id: req.body.user_id, 
         compte_abonnement_id: req.params.id,
         date: new Date()
     }

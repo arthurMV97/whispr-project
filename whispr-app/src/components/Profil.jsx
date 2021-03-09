@@ -125,8 +125,8 @@ const Profil =  (props) => {
             <p>{displayUserData.description}</p>
             <p>Lieu: {displayUserData.lieu}</p>
             <div className="abonnement-infos">
-            <button onClick={() => displayPopUp(true, true)}>Abonnements: {id === userId ? followingData.nbAbonnements : displayUserData.nbAbonnements}</button>
-            <button onClick={() => displayPopUp(true, false)}>Abonnés: {id === userId ? followingData.nbAbonnes : displayUserData.nbAbonnes}</button>
+            <button onClick={() => displayPopUp(true, true)}>Abonnements: {id === userId ? (followingData.nbAbonnements - 1) : (displayUserData.nbAbonnements - 1)}</button>
+            <button onClick={() => displayPopUp(true, false)}>Abonnés: {id === userId ? (followingData.nbAbonnes - 1) : (displayUserData.nbAbonnes - 1)}</button>
             </div>
             </div>
             {popUpBool.display && <PopUpAbonnements bool={popUpBool.abonnements} closePopUp={displayPopUp} /> }

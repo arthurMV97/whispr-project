@@ -84,13 +84,23 @@ class SinglePoste extends Component {
         
 
     }
-    return () => {
-        socket.emit('leave-room', data)
-    }
+    // return () => {
+    //     socket.emit('leave-room', data)
+    // }
         
     }
 
     componentWillUnmount() {
+        const data = {
+            id: this.props.dataFromParent.id,
+            user: this.props.dataFromParent.prenom
+        }
+    
+        socket.off('add-new-comment')
+        socket.off('unliked-post')
+        socket.off('liked-post')
+        socket.emit('leave-room', data)
+
         this._isMounted = false
 
     }
@@ -145,7 +155,6 @@ class SinglePoste extends Component {
     render() {
         return (
             <div>
-
                 {this.state.commentPopUp &&   <Commentaires data = {this.state.data} newComment = {this.state.newComment} closeCommentPopUp = {this.closeCommentPopUp}/> }
 
 

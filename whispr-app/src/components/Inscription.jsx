@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom'
+import { Link, withRouter} from 'react-router-dom';
 
 
 
@@ -24,6 +24,21 @@ class Inscription extends Component {
                 valid: null
             },
             email: {
+                content: '',
+                msg: '',
+                valid: null
+            },
+            description: {
+                content: '',
+                msg: '',
+                valid: null
+            },
+            lieu: {
+                content: '',
+                msg: '',
+                valid: null
+            },
+            image: {
                 content: '',
                 msg: '',
                 valid: null
@@ -82,15 +97,15 @@ class Inscription extends Component {
         const rgxNames = /^[a-z ,.'-]+$/i
         const rgxEmails = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
         const rgxPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
-
+        const url = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
         //Champ vide
         if (val === '') {
             response.msg = `Champs obligatoire pour ${name}` 
             return response
         }
 
-        //Nom Prénom
-        else if ((name === 'nom' || name === 'prenom') && !rgxNames.test(val)) {
+        //Nom Prénom Lieu Description
+        else if ((name === 'nom' || name === 'prenom' || name === 'lieu' || name === 'description') && !rgxNames.test(val)) {
             response.msg = `Veuillez entrer un ${name} valide`
             return response
         }
@@ -98,6 +113,12 @@ class Inscription extends Component {
         //Emails
         else if ((name === 'email') && !rgxEmails.test(val)) {
             response.msg = `Veuillez entrer un ${name} valide`
+            return response
+        }
+
+        //URL
+        else if ((name === 'image') && !url.test(val)) {
+            response.msg = `Veuillez entrer une ${name} valide`
             return response
         }
 
@@ -127,19 +148,28 @@ class Inscription extends Component {
         const isFormValid = this.formValidation()
         
        if (isFormValid) {
-        if (this.state.confirmation === this.state.password) {
+           console.log(this.state.confirmation.content === this.state.password.content);
+        if (this.state.confirmation.content === this.state.password.content) {
             const user = {
                 nom: this.state.nom.content,
                 prenom: this.state.prenom.content,
                 date: this.state.date.content,
                 email: this.state.email.content,
                 password: this.state.password.content,
+                lieu: this.state.lieu.content,
+                description: this.state.description.content,
+                image: this.state.image.content
+
+
                         }
 
             axios.post('http://localhost:8080/sign-up', user)
                 .then(res => {
                     console.log(res.data)
                 })
+                this.props.history.push('/')
+
+
         } else {
             this.setState(prevState => ({
                 confirmation: {                   
@@ -170,6 +200,14 @@ class Inscription extends Component {
                 <p className={this.state.date.valid ? 'valid-input' : 'not-valid-input'}>{this.state.date.msg}</p>
                 <input type="email" name="email" id="email" placeholder="Email*" onChange={this.handleChange} required />
                 <p className={this.state.email.valid ? 'valid-input' : 'not-valid-input'}>{this.state.email.msg}</p>
+
+                <input type="text" name="description" id="description" placeholder="Description*" onChange={this.handleChange} required />
+                <p className={this.state.description.valid ? 'valid-input' : 'not-valid-input'}>{this.state.description.msg}</p>
+                <input type="text" name="image" id="image" placeholder="Image*" onChange={this.handleChange} required />
+                <p className={this.state.image.valid ? 'valid-input' : 'not-valid-input'}>{this.state.image.msg}</p>
+                <input type="text" name="lieu" id="lieu" placeholder="Lieu*" onChange={this.handleChange} required />
+                <p className={this.state.lieu.valid ? 'valid-input' : 'not-valid-input'}>{this.state.lieu.msg}</p>
+
                 <input type="password" name="password" id="password" placeholder="Mot de passe" onChange={this.handleChange} required />
                 <p className={this.state.password.valid ? 'valid-input' : 'not-valid-input'}>{this.state.password.msg}</p>
                 <input type="password" name="confirmation" id="confirm" placeholder="Confirmez votre mot de passe" onChange={this.handleChange} required />
@@ -186,4 +224,4 @@ class Inscription extends Component {
     }
 }
 
-export default Inscription;
+export default withRouter(Inscription);

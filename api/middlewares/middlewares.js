@@ -86,16 +86,16 @@ router.use('/random', (req, res, next) => {
     }) 
 })
 
-router.use('/comments', (req, res, next) => {
-    tokenToVerify = req.headers.authorization
-    jwt.verify(tokenToVerify, config.secret, (err, decoded) => {
-        if (err) {
-            res.status(404).send("Accès impossibe")
-        } else {
-            next()
-        }
-    }) 
-})
+// router.use('/comments', (req, res, next) => {
+//     tokenToVerify = req.headers.authorization
+//     jwt.verify(tokenToVerify, config.secret, (err, decoded) => {
+//         if (err) {
+//             res.status(404).send("Accès impossibe")
+//         } else {
+//             next()
+//         }
+//     }) 
+// })
 
 router.use('/feed', (req, res, next) => {
     tokenToVerify = req.headers.authorization

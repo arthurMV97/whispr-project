@@ -24,6 +24,8 @@ import {
 
 function App() {
   const userId = useSelector(state => state.userStore.id)
+  const userToken = useSelector(state => state.userStore.token)
+
   const isUserLogged = useSelector(state => state.userStore.isLogged)
   const isAdmin = useSelector(state => state.adminStore.isLogged)
   const [userData, setUserData] = useState({})
@@ -37,10 +39,16 @@ function App() {
 
   useEffect( () => {
     if (isUserLogged) {
-     axios.get(`http://localhost:8080/profile/${userId}`)
+     axios.get(`http://localhost:8080/profile/${userId}`, {
+        headers: {
+            'Authorization': userToken
+        }
+     })
       .then(res => {
 
         let newData = res.data
+        console.log(newData);
+        
         const splitted = {
           abonnements: res.data.abonnements.split(','),
           abonnes: res.data.abonnes.split(','),
@@ -54,7 +62,11 @@ function App() {
         dispatch({type: 'CONNECT', ...newData})
 
       })
-      axios.get(`http://localhost:8080/favoris/${userId}`)
+      axios.get(`http://localhost:8080/favoris/${userId}`, {
+        headers: {
+            'Authorization': userToken
+        }
+     })
         .then(response => {
           console.log('favvv', response.data);
           let favorisIds = []
@@ -85,6 +97,8 @@ function App() {
         <MobileHeader />
         <MobileNav />
       </MobileView>
+
+
           <Switch>
           <Route exact path="/">
             <Home displayUserData = {userData} />

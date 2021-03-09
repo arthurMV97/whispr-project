@@ -52,10 +52,11 @@ const PopUpAbonnements = ({bool, closePopUp}) => {
             <div className="user-list">
                 {boolState ?
                 abonnementsState.map(e => {
-                        return (<SingleUser data={e} key={e.id} autoClose={closeFct} />)
+                        return (e.id.toString() !== id && <SingleUser data={e} key={e.id} autoClose={closeFct} />)
+                    
                     }):
                 abonnesState.map(e => {
-                        return (<SingleUser data={e} key={e.id} autoClose={closeFct}/>)
+                        return (e.id.toString() !== id && <SingleUser data={e} key={e.id} autoClose={closeFct}/>)
                 })
                 }
             </div>

@@ -17,15 +17,9 @@ const Commentaires = (props) => {
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []); //Permet de forcer l'update
-
-
-    const [commentsArray, setCommentsArray] = useState([])
     const [inputValue, setInputValue] = useState('')
     const [isMounted, setIsMounted] = useState(false)
-
-
-   
-    
+    const [commentsArray, setCommentsArray] = useState([])
 
     useEffect(() => {
         if (!isMounted) {
@@ -42,7 +36,6 @@ const Commentaires = (props) => {
         
 
         let bool = Object.keys(props.newComment).length > 0;
-        
         if (bool) {
             let rdm = Math.random()
             let newComment = props.newComment
@@ -54,6 +47,7 @@ const Commentaires = (props) => {
             forceUpdate()
         }
         scrollToBottom()
+
     },[props.data.id, props.newComment]) 
 
     const scrollToBottom = () => {
@@ -63,7 +57,6 @@ const Commentaires = (props) => {
     const handleChange = event => {
         setInputValue(event.target.value)
     }
-
     const addComment = event => {
         event.preventDefault();
         const dataToEmit = {
@@ -78,8 +71,6 @@ const Commentaires = (props) => {
         console.log(dataToEmit);
         socket.emit('new-comment', dataToEmit)
         setInputValue('')
-
-
     }
 
     
@@ -92,8 +83,6 @@ const Commentaires = (props) => {
             <p className="post-content">{props.data.content} <br/> <font color="#E8CD5E">- {props.data.prenom} {props.data.nom} -</font></p>
 
             <div className="feed-box">
-            { console.log(commentsArray)}
-
              {commentsArray.map(comment => {
                  return (
                     <div key={`comment-${comment.user_id}-${comment.id}`} className={comment.user_id === userId ? "response my-response" : comment.user_id === props.data.user_id ? "response creator-response" : "response"}>
@@ -104,12 +93,12 @@ const Commentaires = (props) => {
              })}
              <div className="anchor" ref={messagesEndRef}></div>
             </div>
+            
             <div className="add-comment">
                 <form onSubmit={addComment} className="comment-form">
                 <input type="text" onChange={handleChange} value={inputValue}></input>
                 <button className="full-btn">ADD</button>
                 </form>
-                
             </div>
 
         </div>

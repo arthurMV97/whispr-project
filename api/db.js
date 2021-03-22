@@ -11,7 +11,6 @@ connection.connect((err) => {
     console.log("Connected to the db")
 })
 
-connection.query('CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY, nom TEXT, prenom TEXT, date DATE, email TEXT, password TEXT, image TEXT, description TEXT, lieu TEXT) ;')
 
 
 

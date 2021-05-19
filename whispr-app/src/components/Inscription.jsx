@@ -166,6 +166,7 @@ class Inscription extends Component {
             axios.post('http://localhost:8080/sign-up', user)
                 .then(res => {
                     console.log(res.data)
+                    
                 })
                 this.props.history.push('/')
 
